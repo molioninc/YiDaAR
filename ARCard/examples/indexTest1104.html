@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+		<title>AR Card Editor 1456</title>
+		<link rel="stylesheet" href="mui/mui.css">
+		<link rel="stylesheet" href="./common/common.css">
+		<link rel="stylesheet" href="../dist/image-clip.css">
+		<link rel="stylesheet" href="common/clip.css">
+	</head>
+
+	<body style="font-size: 12px;">
+		<div class="pop-main" id="loading-page" onclick="OnLoadingPageClick()">
+			<img id="loadingImg" src="../img/loadingImg.png">
+		</div>
+		<!-- 生成的贺卡图 -->
+		<div id="final-page" class="hidden" style="position: absolute; width: 100%; height: 100%;">
+			<div id="shareImg">
+
+			</div>
+		</div>
+		<div id="portrait-screen" class="hidden">
+			<img src="../img/RotateTip.png" style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);" alt="">
+		</div>
+		<div id="main">
+
+			<!-- <div>
+			<img src="../../兑位置用图/倒数第二张.jpg" style="width: 100%;z-index: 9;" alt="">
+		</div> -->
+			<!-- 确定使用裁剪图片弹框 -->
+			<div class="pop-main hidden" id="applyClipTip">
+				<div class="search" id="applyClipTipBg">
+					<div class="btn-select">
+						<input class="cancel" id="cancelApplyClip" type="image" src="../img/cancel.png">
+						<input class="apply" id="confirmApplyClip" type="image" src="../img/apply.png">
+					</div>
+				</div>
+			</div>
+
+			<!-- 确定合成图片弹框 -->
+			<div class="pop-main hidden" id="applyAllTip">
+				<div class="search" id="applyAllTipBg">
+					<div class="btn-select">
+						<input class="cancel" id="cancelApplyAll" type="image" src="../img/cancel.png">
+						<input class="apply" id="confirmApplyAll" type="image" src="../img/confirm.png">
+					</div>
+				</div>
+			</div>
+
+			<div class="clip-content">
+				<img src="../img/pageLogo.png" id="homeLogoImage" class="clip-img" alt="">
+
+				<div class="img-clip"></div>
+
+				<nav class="clip-action nav-bar nav-bar-tab hidden">
+					<a class="tab-item" id="btn-return-home-from-clip-page">
+						<img class="mui-icon mui-icon-arrowleft tab-icon back" src="../img/RETURN.png" alt="">
+						<!-- <span class="mui-icon mui-icon-arrowleft tab-icon"></span> -->
+						<!-- <span class="tab-label hidden">返回主页</span> -->
+					</a>
+					<a class="tab-item " id="btn-rotate-anticlockwise">
+						<img class="mui-icon mui-icon-refreshempty tab-icon rotate90 left" src="../img/LEFTROTATION.png" alt="">
+						<!-- <span class="mui-icon mui-icon-refreshempty tab-icon rotate90"></span> -->
+						<!-- <span class="tab-label hidden">逆时针旋转</span> -->
+					</a>
+					<a class="tab-item " id="btn-rotate-clockwise">
+						<img class="mui-icon mui-icon-refreshempty tab-icon right" src="../img/RIGHTROTATION.png" alt="">
+						<!-- <span class="mui-icon mui-icon-refreshempty tab-icon"></span> -->
+						<!-- <span class="tab-label hidden">顺时针旋转</span> -->
+					</a>
+					<a class="tab-item" id="btn-verify-clip">
+						<img class="mui-icon mui-icon-checkmarkempty tab-icon next back" src="../img/NEXT.png" alt="">
+						<!-- <span class="mui-icon mui-icon-checkmarkempty tab-icon"></span> -->
+						<!-- <span class="tab-label hidden">确定</span> -->
+					</a>
+				</nav>
+			</div>
+			<!-- 选择背景图 -->
+			<div id="chooseBgDiv">
+				<!-- 从相册选择 -->
+				<div class="upload-container" id="choose-gallery">
+					<div class="upload-pretty button-three-dimen">
+						<input type="file" id="targetImg" accept="image/*">
+						<!-- 上传图片 -->
+						<img class="choose-button phone-btn" src="../img/UploadPhotos.png" alt="">
+					</div>
+					<!-- <input class="uploadimg" type="file" id="targetImg" style="visibility:hidden ;">
+				<img class="choose-button upload-btn" src="../img/UploadPhotos.png" alt=""> -->
+				</div>
+				<!-- 拍摄照片 -->
+				<div class="upload-container" id="choose-camera">
+					<div class="upload-pretty button-three-dimen">
+						<input type="file" id="targetImgCamera" capture="camera" accept="image/*">
+						<!-- 手机拍摄 -->
+						<img class="choose-button phone-btn" src="../img/PHOTOGRAPH.png" alt="">
+					</div>
+				</div>
+				<!-- 使用默认背景 -->
+				<div class="upload-container" id="default-background">
+					<div class="upload-pretty button-three-dimen">
+						<!-- 使用默认背景 -->
+						<img class="choose-button phone-btn" id="btn-dufault-background" src="../img/default.png" alt="">
+					</div>
+				</div>
+			</div>
+
+			<div class="show-content hidden">
+				<!-- <div style="display: flex;flex-wrap: wrap;"> -->
+				<div class="img-wrap ui-droppable" id="img-wrap">
+					<img class="show-img" id="show-img" data-preview-src="" data-preview-group="2">
+					<!-- <img class="img-preset hidden" src="../img/PartyA/元素10.png" alt="">
+					<p class="img-text hidden" id="img-text">THANK YOU</p>
+					<img class="img-model hidden" src="../img/PartyA/元素04.png" alt=""> -->
+
+					<div id="addedBgs" class="addedElements" ondrop="drop(event)" ondragover="dragover(event)">
+						<!-- bg展示占位标签 -->
+						<!-- <img src="/" class="addedSingleElement" id="addedBg_0"> -->
+					</div>
+
+					<div id="addedPresetImages" class="addedElements" ondrop="drop(event)" ondragover="dragover(event)">
+						<!-- PresetImage展示占位标签 -->
+						<!-- <img src="/" class="addedSingleElement hidden" id="addedPresetImage_0"> -->
+					</div>
+
+					<div id="addedModels" class="addedElements" ondrop="drop(event)" ondragover="dragover(event)">
+						<!-- <div id="addedModel" class="addedModelElement"></div> -->
+						<!-- <div id="addedModel" class="addedModelElement"></div> -->
+					</div>
+
+					<div id="addedTexts" class="addedElements" ondrop="drop(event)" ondragover="dragover(event)">
+						<!-- Text展示占位标签 -->
+						<p class="addedText hidden" id="addedText_0" style="font-size: 12px;"> text </p>
+					</div>
+				</div>
+
+				<div id="toolsPart" class="hidden">
+					<img id="toolsPartBg" src="../img/EditorToolPart.png">
+					<p id="toolsPartTitleP" font-family="NotoSansHansMedium">SELECT BG</p>
+
+					<!-- 选择bg -->
+					<div id="selectBgList" class="selectionList hidden">
+						<div id="bgWrap" class="listWrap">
+							<!-- <div class="singleSelection">
+								<img class="unselectedIcon" onclick="SelectBg(0)" src="../img/PartyA/unselected.png">
+								<img class="selectedIcon hidden" onclick="SelectBg(0)" src="../img/PartyA/selected.png">
+								<img class="selectionImg" onclick="SelectBg(0)" src="../img/pageLogo.png">
+							</div> -->
+						</div>
+					</div>
+					<!-- 选择预设图标 -->
+					<div id="selectPresetImageList" class="selectionList hidden">
+						<div id="presetImageWrap" class="listWrap">
+							<!-- <div class="singleSelection">
+								<img class="unselectedIcon" onclick="SelectPresetImage(0)" src="../img/PartyA/unselected.png">
+								<img class="selectedIcon hidden" onclick="SelectPresetImage(0)" src="../img/PartyA/selected.png">
+								<img class="selectionImg" onclick="SelectPresetImage(0)" src="../img/PartyA/PresetImage_0.png">
+							</div>-->
+						</div>
+					</div>
+					<!-- 选择模型 -->
+					<div id="selectModelList" class="selectionList hidden">
+						<div id="modelWrap" class="listWrap">
+							<!-- 							<div class="singleSelection">
+								<img class="unselectedIcon" onclick="SelectModel(0)" src="../img/PartyA/unselected.png">
+								<img class="selectedIcon hidden" onclick="SelectModel(0)" src="../img/PartyA/selected.png">
+								<img class="selectionImg" onclick="SelectModel(0)" src="../img/PartyA/PresetImage_0.png">
+							</div>-->
+						</div>
+					</div>
+					<!-- 选择text -->
+					<div id="editTextList" class="selectionList hidden">
+						<!-- <div id="textWrap" class="listWrap"> -->
+						<div id="textWrap">
+							<div id="fontSelections">
+								<div id="fontSizeBtn" onclick="ShowFontEditorTool(0)" class="fontSelection">
+									<img src="../img/fontSize.png" />
+								</div>
+								<div id="fontWeightBtn" onclick="ShowFontEditorTool(1)" class="fontSelection">
+									<img src="../img/fontWeight.png" />
+								</div>
+								<div id="fontColourBtn" onclick="ShowFontEditorTool(2)" class="fontSelection">
+									<img src="../img/fontColour.png" />
+								</div>
+							</div>
+							<div id="fontSizeSliderBg">
+								<img src="../img/fontSizeSilder.png" id="fontSizeSliderBgImg">
+								<input id="fontSizeSlider" type="range" value="12" min="12" max="30" step="2" oninput="UpdateFontSizeSlider(this.value)">
+							</div>
+							<!-- 字体加粗 -->
+							<div id="fontWeightSlider" class="hidden">
+
+								<img id="weightImg" src="../img/fontSizeSliderThumb.png">
+								<span style="width: 15px;height: 15px;position: absolute;left: 32%;" onclick="UpdateFontWeightSlider(0)"></span>
+								<span style="width: 15px;height: 15px;position: absolute;left: 57%;" onclick="UpdateFontWeightSlider(1)"></span>
+							</div>
+							<!-- 字体颜色 -->
+							<div id="fontColourSlider">
+								<div class="colour-picker hidden" id="colour-picker"></div>
+							</div>
+
+							<!-- 输入框 -->
+							<input type="text" onfocus="OnTextInputFocusIn()" onblur="EditorTextDone(value)" id="edit-content" value="THANK YOU">
+						</div>
+					</div>
+
+				</div>
+				<!-- </div> -->
+
+				<nav class="nav-bar nav-bar-tab">
+					<!-- 从编辑页面返回主页面 -->
+					<a class="tab-item" id="btn-return-home-from-editor-page">
+						<img src="../img/RETURN.png" class="mui-icon mui-icon-arrowleft tab-icon best1" alt="">
+					</a>
+					<!-- 显示bg tool -->
+					<a class="tab-item" id="btn-show-bg-tool">
+						<img src="../img/background.png" class="mui-icon mui-icon-arrowleft tab-icon best2" alt="">
+					</a>
+					<!-- 显示presetImages tool -->
+					<a class="tab-item" id="btn-show-presetImages-tool">
+						<img src="../img/PRESETIMAGES.png" class="mui-icon mui-icon-arrowleft tab-icon best3" alt="">
+					</a>
+					<!-- 显示model tool -->
+					<a class="tab-item" id="btn-show-model-tool">
+						<img src="../img/MODEL.png" class="mui-icon mui-icon-arrowleft tab-icon best4" alt="">
+					</a>
+					<!-- 显示text tool -->
+					<a class="tab-item" id="btn-show-text-tool">
+						<img src="../img/TEXT.png" class="mui-icon mui-icon-more-filled tab-icon best5" alt="">
+					</a>
+					<!-- 生成贺卡背景 -->
+					<a class="tab-item" id="btn-create">
+						<img src="../img/create.png" class="mui-icon mui-icon-more-filled tab-icon best6" alt="">
+					</a>
+				</nav>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="./common/fileinput.js"></script>
+		<script type="text/javascript" src="./common/exif.js"></script>
+		<script type="text/javascript" src="./../dist/image-clip.js"></script>
+		<script type="text/javascript" src="../js/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+		<script type="text/javascript" src="../js/flexible.js"></script>
+		<script type="text/javascript" src="../js/html2canvas.js"></script>
+		<script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.ui.touch-punch.min.js"></script>
+		<script type="text/javascript" src="../js/three.js"></script>
+		<script type="text/javascript" src="../js/GLTFLoader.js"></script>
+		<script type="text/javascript" src="../js/OrbitControls.js"></script>
+		<script type="text/javascript" src="../js/colorpicker.js"></script>
+
+		<script>
+			//域名
+			// var domainName = "https://webar.esquel.cn/";
+			var domainName = "https://molion.tech/test/YiDaAR/";
+
+			var cropImage;
+			var imgData;
+			// 图片缓存数据
+			var img_b64;
+			// 从链接获取的用户品牌ID
+			var cid;
+			// 从链接获取的贺卡唯一ID
+			var uid;
+			// 存储从后台获取的元素数量
+			var bgIconCount;
+			var presetImageCount;
+			var modelCount;
+			// 模型的宽高，用于上传给后台
+			var cardWidth;
+			var cardHeight;
+			// 模型相对于父物体位置
+			var modelPos_X;
+			var modelPos_Y;
+			// 模型坐标数组，用于上传给后台
+			var modelPosArr;
+			// 最终合成图片的url，用于上传给后台
+			var uploadImageUrl;
+			// 当前选中的元素
+			var currentSelectedElement = null;
+			// 创建颜色选择器对象
+			var colourPickerObj = Colorpicker.create({
+				el: "colour-picker",
+				color: "#ffffff",
+				change: function(elem, hex) {
+					// console.log(hex)
+					elem.style.backgroundColor = hex;
+					// $("#addedText_0").css = ("color",'"' + hex + '"')
+					$("#addedText_0").css("color", '"' + hex + '"');
+				}
+			});
+			//---------------
+			//------bool-----
+			//---------------
+			// 判断是否在成品页面，控制生成图片Div显隐
+			var isCardCreated = false;
+			// 判断横竖屏
+			var isLandScape = false;
+			var isWaitingToShowPhoto = false;
+
+
+			//dom加载完毕后，初始化页面
+			window.onload = InitPage();
+
+			function InitPage() {
+				// 隐藏loading
+				HideLoadingPage(false);
+				// 初始化参数
+				InitParams();
+				// console.log("loading-page img loaded");
+				// 初始化监听
+				InitListeners();
+				// 计时器，等待colourPickerObj生成成功
+				ColourPickerObjTimer();
+				// 初始化从相册选择的图片以及拍照,完成后
+				InitImgClip();
+				// 获取数据，刷新列表
+				GetIconData();
+			}
+
+			// 初始化参数
+			function InitParams() {
+				// css
+				$("#final-page").css('position', 'absolute');
+				$("#final-page").css('width', '100%');
+				$("#final-page").css('height', '100%');
+			}
+
+			// 初始化监听
+			function InitListeners() {
+				// console.log("initListeners");
+				// 使用默认背景
+				$('#btn-dufault-background').on('click', function() {
+					OnDufaultBackgroundBtnClick();
+				});
+
+				// 从裁剪页面返回主页面
+				$('#btn-return-home-from-clip-page').on('click', function() {
+					document.querySelector('.clip-img').classList.remove('hidden')
+					cropImage && cropImage.destroy();
+					changeImgClipShow(false);
+				});
+				// 逆时针旋转图片
+				$('#btn-rotate-anticlockwise').on('click', function() {
+					if (!cropImage) {
+						tips('Please select one image');
+						return;
+					}
+					cropImage.rotate(false);
+				});
+				// 顺时针旋转图片
+				$('#btn-rotate-clockwise').on('click', function() {
+					if (!cropImage) {
+						tips('Please select one image');
+						return;
+					}
+					cropImage.rotate(true);
+				});
+				// 使用裁剪图片
+				$('#btn-verify-clip').on('click', function() {
+					if (!cropImage) {
+						tips('Please select one image');
+						return;
+					}
+					// 显示提示弹框
+					$('#applyClipTip').removeClass("hidden");
+
+					// 编辑图片界面居中
+					var contentHeight = window.innerHeight - parseFloat($(".clip-action").css("height"));
+					$(".show-content").css("height", contentHeight);
+				});
+				// 取消使用裁剪图片
+				$('#cancelApplyClip').on('click', function() {
+					// 隐藏提示框
+					$("#applyClipTip").addClass("hidden");
+				});
+				// 确认裁剪后的图片
+				$('#confirmApplyClip').on('click', function() {
+					// 隐藏提示框
+					$("#applyClipTip").addClass("hidden");
+					cropImage.clip(false);
+					imgData = cropImage.getClipImgData();
+					recognizeImg(function() {
+						changeContent(true);
+					}, function(error) {
+						tips(JSON.stringify(error), true);
+					});
+				});
+
+				// 从编辑页面返回主页面
+				$('#btn-return-home-from-editor-page').on('click', function() {
+					$('#chooseBgDiv').removeClass("hidden");
+					changeContent(false);
+				});
+				// 显示bg tool
+				$('#btn-show-bg-tool').on('click', function() {
+					ShowToolList(0);
+				});
+				// 显示presetImages tool
+				$('#btn-show-presetImages-tool').on('click', function() {
+					ShowToolList(1);
+				});
+				// 显示model tool
+				$('#btn-show-model-tool').on('click', function() {
+					ShowToolList(2);
+				});
+				// 显示text tool
+				$('#btn-show-text-tool').on('click', function() {
+					ShowToolList(3);
+				});
+				// 可拖动区域手指滑动，旋转元素
+				document.querySelector("#img-wrap").addEventListener("touchstart", HandleTouchEvent, false);
+				document.querySelector("#img-wrap").addEventListener("touchend", HandleTouchEvent, false);
+				document.querySelector("#img-wrap").addEventListener("touchmove", HandleTouchEvent, false);
+
+
+				// 可拖动区域释放事件
+				$("#img-wrap").droppable({
+					drop: function(event, ui) {
+						$(this).addClass("isDropped");
+						// $(this).css({position: "absolute"});
+						// console.log($(this).css("position"));
+					}
+				});
+				// 生成贺卡背景图
+				$('#btn-create').on('click', function() {
+					// 显示提示弹框
+					$('#applyAllTip').removeClass("hidden");
+				});
+				// 取消生成
+				$('#cancelApplyAll').on('click', function() {
+					// 隐藏提示弹框
+					$("#applyAllTip").addClass("hidden");
+				});
+				// 确认生成
+				$('#confirmApplyAll').on('click', function() {
+					// 隐藏提示弹框
+					$("#applyAllTip").addClass("hidden");
+					// 先保存模型位置
+					GetModelPos();
+					// 再隐藏展示模型的父级
+					$('#addedModels').addClass('hidden');
+					// 最后保存截图
+					saveScreenShot();
+				});
+			}
+
+			// 初始化从相册选择的图片
+			function InitImgClip() {
+				new FileInput({
+					container: '#targetImg',
+					isMulti: false,
+					type: 'Image_Camera',
+					success: function(b64, file, detail) {
+						ShowLoadingPage(true, 2000);
+						console.log("fileName:" + file.name);
+
+						loadImg(b64);
+					},
+					error: function(error) {
+						console.error(error);
+						// 隐藏loading页面
+						HideLoadingPage();
+					}
+				});
+
+				new FileInput({
+					container: '#targetImgCamera',
+					isMulti: false,
+					type: 'Camera',
+					success: function(b64, file, detail) {
+						ShowLoadingPage(true, 2000);
+						img_b64 = b64;
+						// 横屏，直接显示
+						if (isLandScape) {
+							console.log("isLandScape fileName:" + file.name);
+							loadImg(img_b64);
+						}
+						// 竖屏，等待变成横屏
+						else {
+							isWaitingToShowPhoto = true;
+						}
+					},
+					error: function(error) {
+						console.error(error);
+					}
+				});
+			}
+
+			// 加载页面请求icon的数据
+			function GetIconData() {
+				console.log("GetIconData");
+				var formData = new FormData();
+
+				var searchURL = window.location.search;
+				// var searchURL = 'http://molion.tech/test/YiDaAR/ARCard/examples/index.html?cid=01&uid=G7i.K37s6Sidy';
+				uid = searchURL.split("&")[1].split("=")[1];
+				cid = searchURL.split("&")[0].split("=")[1];
+				cid = parseInt(cid).toString();
+				// cid = 0;
+				formData.append("cid", cid);
+				$.ajax({
+					url: domainName + 'yida-ar-admin/public/index.php/getResourcesNum',
+					// url: 'http://192.168.1.25/yida-ar-admin/public/index.php/getResourcesNum',
+					async: false,
+					type: "POST",
+					data: formData,
+					dataType: "json",
+					processData: false,
+					contentType: false,
+					success: function(data) {
+						console.log(data);
+						presetImageCount = data["data"][cid]["Element_2D"];
+						modelCount = data["data"][cid]["Element_3D"];
+						bgIconCount = data["data"][cid]["Background"];
+
+						InitIcons(cid);
+					},
+					error: function(xhr) {
+						console.log("error", xhr);
+					}
+				});
+			}
+
+			var isCanRotate = true;
+			var isCanResize = true;
+			//防止缩放之后自动旋转
+			var isResizing = false;
+			var touchMoveDis;
+			// 单指
+			var touchLastPos_X;
+			var touchLastPos_Y;
+			var touchLastRotation;
+			var touchMoveDis_X;
+			var touchMoveDis_Y;
+			// 两指
+			var touchStartSizeWidth;
+			var touchStartSizeHeight;
+			var touchMoveDisOriginal;
+			var touchMoveDis_0;
+			var touchMoveDis_1;
+			// 控制元素旋转
+			function HandleTouchEvent(event) {
+				// 只跟踪一次触摸，控制旋转
+				if (event.touches.length == 1 && currentSelectedElement != null) {
+					// var output = document.getElementById("output");
+					switch (event.type) {
+						case "touchstart":
+							// console.log("touchstart", 0);
+							// 记录初始位置，刷新上次位置，否则会按照上次的旋转计算从而出错
+							if (isCanRotate == true) {
+								touchLastPos_X = event.touches[0].clientX;
+								touchLastPos_Y = event.touches[0].clientY;
+								var currentSelectedElementTransform = currentSelectedElement.get(0).style.transform;
+								touchLastRotation = parseFloat(currentSelectedElementTransform.slice(7, currentSelectedElementTransform.length -
+									4));
+								// 防止缩放之后自动旋转，这里是点击之后才生效，所以双指变为单指的情况无需考虑
+								if (isResizing == true) {
+									isResizing = false;
+								}
+							}
+							break;
+						case "touchmove":
+							// console.log("touchmove", 0);
+							// 双指缩放时不旋转
+							if (isCanRotate == true && isResizing == false) {
+								event.preventDefault();
+								// 阻止滚动
+								// console.log("Touch moved (" + event.changedTouches[0].clientX + "," + event.changedTouches[0].clientY + ")");
+								touchMoveDis_X = event.changedTouches[0].clientX - touchLastPos_X;
+								touchMoveDis_Y = event.changedTouches[0].clientY - touchLastPos_Y;
+								touchMoveDis = Math.sqrt(Math.pow(touchMoveDis_X, 2) + Math.pow(touchMoveDis_Y, 2));
+								// 手指往右，逆时针
+								if (touchMoveDis_X >= 0) {
+									// 减去初始旋转角度
+									touchMoveDis = touchMoveDis - touchLastRotation;
+									touchMoveDis %= 360;
+									currentSelectedElement.css('transform', 'rotate(' + (-touchMoveDis) + 'deg)');
+								}
+								// 手指往左，顺时针
+								else if (touchMoveDis_X < 0) {
+									// 减去初始旋转角度
+									touchMoveDis = touchMoveDis + touchLastRotation;
+									touchMoveDis %= 360;
+									if (touchMoveDis < 0) {
+										touchMoveDis += 360;
+									}
+									currentSelectedElement.css('transform', 'rotate(' + touchMoveDis + 'deg)');
+								}
+								touchLastPos_X = event.changedTouches[0].clientX;
+								touchLastPos_Y = event.changedTouches[0].clientY;
+								var currentSelectedElementTransform = currentSelectedElement.get(0).style.transform;
+								touchLastRotation = parseFloat(currentSelectedElementTransform.slice(7, currentSelectedElementTransform.length -
+									4));
+								// console.log('transform', currentSelectedElement.get(0).style.transform);
+							}
+							break;
+						case "touchend":
+							// console.log("touchend", 0);
+							break;
+					}
+				}
+				// 双指控制缩放
+				else if (event.touches.length == 2 && currentSelectedElement != null) {
+					switch (event.type) {
+						case "touchstart":
+							// console.log("touchstart", 1);
+							if (isCanResize == true) {
+								// 正在缩放
+								isResizing = true;
+								touchStartSizeWidth = currentSelectedElement.width();
+								touchStartSizeHeight = currentSelectedElement.height();
+								touchMoveDisOriginal = Math.sqrt(Math.pow((event.touches[1].clientX - event.touches[0].clientX), 2) + Math.pow(
+									(event.touches[1].clientY - event.touches[0].clientY), 2));
+							}
+							break;
+						case "touchmove":
+							// console.log("touchmove", 1);
+							if (isCanResize == true) {
+								// 正在缩放
+								isResizing = true;
+								// 阻止滚动
+								event.preventDefault();
+								touchMoveDis = Math.sqrt(Math.pow((event.touches[1].clientX - event.touches[0].clientX), 2) + Math.pow(
+									(event.touches[1].clientY - event.touches[0].clientY), 2));
+								// console.log("touchMoveDis", touchMoveDis);
+								if (touchMoveDisOriginal != 0) {
+									//缩放比例
+									// console.log("touchMoveDis", touchMoveDis);
+									// console.log("touchMoveDisOriginal", touchMoveDisOriginal);
+									var scaleRatio = touchMoveDis / touchMoveDisOriginal;
+									// console.log("scaleRatio", scaleRatio);
+									// 手指缩放
+									if (scaleRatio != 0) {
+										var currentWidth = touchStartSizeWidth * scaleRatio;
+										var currentHeight = touchStartSizeHeight * scaleRatio;
+										// 控制阈值
+										if (currentWidth > 40 && currentWidth < 160) {
+											currentSelectedElement.css('width', currentWidth);
+											currentSelectedElement.css('height', currentHeight);
+											SetDraggableArea(currentSelectedElement, true, 0, 0);
+										}
+									}
+								}
+							}
+							break;
+						case "touchend":
+							// console.log('touchend 两根手指');
+							break;
+					}
+				}
+			}
+
+			// 计时器，等待colourPickerObj生成成功
+			function ColourPickerObjTimer() {
+				// console.log('counting!');
+				setTimeout(() => {
+					if (colourPickerObj != null) {
+						colourPickerObj.rgba.r = 255;
+						colourPickerObj.rgba.g = 255;
+						colourPickerObj.rgba.b = 255;
+						colourPickerObj.hsb.h = 0;
+						colourPickerObj.hsb.s = 0;
+						colourPickerObj.hsb.b = 100;
+						$(".colorpicker-showColor").css("background", 'rgb(255,255,255)');
+						// console.log('colourPickerObj created!');
+						//添加手势移动监听
+						document.querySelector(".saturation-white").addEventListener("touchstart", HandleTouchEventColourOblong, false);
+						document.querySelector(".saturation-white").addEventListener("touchmove", HandleTouchEventColourOblong, false);
+						//添加手势移动监听
+						document.querySelector(".hue-horizontal").addEventListener("touchstart", HandleTouchEventColourSlider, false);
+						document.querySelector(".hue-horizontal").addEventListener("touchmove", HandleTouchEventColourSlider, false);
+					} else {
+						ColourPickerObjTimer();
+					}
+				}, 300);
+			}
+
+			var touchColourLastPos_X;
+			var touchColourLastPos_Y;
+			const dragAreaWidth = 150;
+			const dragAreaHeight = 82.5;
+			// 小球左边可移动的最大位置
+			var touchColorOblongLeftPosMin;
+			// 小球右边可移动的最大位置
+			var touchColorOblongRightPosMax;
+			// 小球上边可移动的最大位置
+			var touchColorOblongTopPosMin;
+			// 小球下边可移动的最大位置
+			var touchColorOblongBottomPosMax;
+
+			function HandleTouchEventColourOblong(event) {
+				// 只跟踪一只手指
+				if (event.touches.length == 1) {
+					// var output = document.getElementById("output");
+					switch (event.type) {
+						case "touchstart":
+							touchColourLastPos_X = event.touches[0].clientX;
+							touchColourLastPos_Y = event.touches[0].clientY;
+							var leftPos = touchColourLastPos_X - $(".saturation-white").offset().left;
+							var topPos = touchColourLastPos_Y - $(".saturation-white").offset().top;
+
+							// 小球左边可移动的最大位置
+							touchColorOblongLeftPosMin = -$(".pickerBtn").width() / 2;
+							// 小球右边可移动的最大位置
+							touchColorOblongRightPosMax = $(".saturation-black").width() - $(".pickerBtn").width() / 2;
+							// 小球上边可移动的最大位置
+							touchColorOblongTopPosMin = -$(".pickerBtn").height() / 2;
+							// 小球下边可移动的最大位置
+							touchColorOblongBottomPosMax = $(".saturation-black").height() - $(".pickerBtn").height() / 2;
+							// 判断颜色选择点是否超出父元素范围 如果超出 取可以显示的最小值
+							if (leftPos < touchColorOblongLeftPosMin) {
+								leftPos = touchColorOblongLeftPosMin;
+							} else if (leftPos > touchColorOblongRightPosMax) {
+								leftPos = touchColorOblongRightPosMax;
+							}
+							if (topPos < touchColorOblongTopPosMin) {
+								topPos = touchColorOblongTopPosMin;
+							} else if (topPos > touchColorOblongBottomPosMax) {
+								topPos = touchColorOblongBottomPosMax;
+							}
+							// console.log("leftPos", leftPos);
+							// console.log("topPos", topPos);
+							$(".pickerBtn").css('left', leftPos);
+							$(".pickerBtn").css('top', topPos);
+							// colourPickerObj["setValue"];
+							// console.log("colourPickerObj rgba", colourPickerObj.rgba);
+							// console.log("colourPickerObj rgba", colourPickerObj.hex);
+							// 将rgb转换成hex
+							GetCurrentColorHex(leftPos, topPos, dragAreaWidth, dragAreaHeight);
+							// colourPickerObj.change();
+							break;
+						case "touchmove":
+							touchColourLastPos_X = event.touches[0].clientX;
+							touchColourLastPos_Y = event.touches[0].clientY;
+							var leftPos = touchColourLastPos_X - $(".saturation-white").offset().left;
+							var topPos = touchColourLastPos_Y - $(".saturation-white").offset().top;
+
+							// 小球左边可移动的最大位置
+							touchColorOblongLeftPosMin = -$(".pickerBtn").width() / 2;
+							// 小球右边可移动的最大位置
+							touchColorOblongRightPosMax = $(".saturation-black").width() - $(".pickerBtn").width() / 2;
+							// 小球上边可移动的最大位置
+							touchColorOblongTopPosMin = -$(".pickerBtn").height() / 2;
+							// 小球下边可移动的最大位置
+							touchColorOblongBottomPosMax = $(".saturation-black").height() - $(".pickerBtn").height() / 2;
+							// 判断颜色选择点是否超出父元素范围 如果超出 取可以显示的最小值
+							if (leftPos < touchColorOblongLeftPosMin) {
+								leftPos = touchColorOblongLeftPosMin;
+							} else if (leftPos > touchColorOblongRightPosMax) {
+								leftPos = touchColorOblongRightPosMax;
+							}
+							if (topPos < touchColorOblongTopPosMin) {
+								topPos = touchColorOblongTopPosMin;
+							} else if (topPos > touchColorOblongBottomPosMax) {
+								topPos = touchColorOblongBottomPosMax;
+							}
+							// console.log("leftPos", leftPos);
+							// console.log("topPos", topPos);
+							$(".pickerBtn").css('left', leftPos);
+							$(".pickerBtn").css('top', topPos);
+							// 将rgb转换成hex
+							GetCurrentColorHex(leftPos, topPos, dragAreaWidth, dragAreaHeight);
+
+							break;
+						case "touchend":
+							// console.log("touchend", 0);
+							break;
+					}
+				}
+			}
+
+			// 将rgb转换成hex
+			function GetCurrentColorHex(leftPos, topPos, dragAreaWidth, dragAreaHeight) {
+				// console.log("left", $(".colorBar-color-picker").position().left);
+				// console.log("width", $(".hue-horizontal").width());
+				// console.log("colourPickerObj.hsb.h", colourPickerObj.hsb.h);
+				colourPickerObj.hsb.s = parseInt(100 * (leftPos + $(".pickerBtn").width() / 2) / dragAreaWidth);
+				colourPickerObj.hsb.b = parseInt(100 * (dragAreaHeight - topPos - $(".pickerBtn").height() / 2) / dragAreaHeight);
+				var rgb = colourPickerObj.HSBToRGB(colourPickerObj.hsb);
+				if (rgb.r > 255) {
+					rgb.r = 255
+				}
+				if (rgb.g > 255) {
+					rgb.g = 255
+				}
+				if (rgb.b > 255) {
+					rgb.b = 255
+				}
+				// console.log("rgb", rgb);
+
+				colourPickerObj.rgba.r = rgb.r;
+				colourPickerObj.rgba.g = rgb.g;
+				colourPickerObj.rgba.b = rgb.b;
+				var hex = [
+					colourPickerObj.rgba.r.toString(16),
+					colourPickerObj.rgba.g.toString(16),
+					colourPickerObj.rgba.b.toString(16)
+				];
+				hex.map(function(str, i) {
+					if (str.length == 1) {
+						hex[i] = '0' + str;
+					}
+				});
+				var colorHex = "#" + hex[0] + hex[1] + hex[2]
+				$(".colorpicker-hexInput").val(colorHex)
+				// console.log("colorHex", colorHex)
+				$("#addedText_0").css("color", '"' + colorHex + '"');
+				// 给显示颜色的小圆球设置背景颜色
+				$(".colorpicker-showColor").css("background", colorHex)
+			}
+
+			// 颜色选择条touchmove 函数
+			var touchColourSliderPos_X;
+			var touchColourSliderPos_Y;
+			// 小球左边可移动的最大位置
+			var touchColorSliderLeftPosMin;
+			// 小球右边可移动的最大位置
+			var touchColorSliderRightPosMax;
+			// 小球滑动Y坐标固定值
+			var touchColorSliderTopPos;
+
+			function HandleTouchEventColourSlider(event) {
+				// 只跟踪一只手指
+				if (event.touches.length == 1) {
+					switch (event.type) {
+						case "touchstart":
+							touchColourSliderPos_X = event.touches[0].clientX;
+							touchColourSliderPos_Y = event.touches[0].clientY;
+							var leftSliderPos = touchColourSliderPos_X - $(".hue-horizontal").offset().left;
+							var topSliderPos = touchColourSliderPos_Y - $(".hue-horizontal").offset().top;
+
+							// 小球左边可移动的最大位置
+							touchColorSliderLeftPosMin = -$(".colorBar-color-picker").width() / 2;
+							// 小球右边可移动的最大位置
+							touchColorSliderRightPosMax = $(".hue-horizontal").width() - $(".colorBar-color-picker").width() / 2;
+							// 小球上边可移动的最大位置
+							touchColorSliderTopPos = $(".hue-horizontal").offset().top + ($(".hue-horizontal").height - $(
+								".colorBar-color-picker").height) / 2;
+							// 判断颜色选择点是否超出父元素范围 如果超出 取可以显示的最小值
+							if (leftSliderPos < touchColorSliderLeftPosMin) {
+								leftSliderPos = touchColorSliderLeftPosMin
+							} else if (leftSliderPos > touchColorSliderRightPosMax) {
+								leftSliderPos = touchColorSliderRightPosMax
+							}
+							topSliderPos = touchColorSliderTopPos;
+
+							// console.log("leftPos", leftSliderPos);
+							$(".colorBar-color-picker").css('left', leftSliderPos);
+							$(".colorBar-color-picker").css('top', topSliderPos);
+							GetCurrentColorSlider(leftSliderPos + $(".colorBar-color-picker").width() / 2, $(".hue-horizontal").width());
+							// console.log("start")
+							break;
+						case "touchmove":
+							touchColourSliderPos_X = event.touches[0].clientX;
+							touchColourSliderPos_Y = event.touches[0].clientY;
+							var leftSliderPos = touchColourSliderPos_X - $(".hue-horizontal").offset().left;
+							var topSliderPos = touchColourSliderPos_Y - $(".hue-horizontal").offset().top;
+
+							// 小球左边可移动的最大位置
+							touchColorSliderLeftPosMin = -$(".colorBar-color-picker").width() / 2;
+							// 小球右边可移动的最大位置
+							touchColorSliderRightPosMax = $(".hue-horizontal").width() - $(".colorBar-color-picker").width() / 2;
+							// 小球上边可移动的最大位置
+							touchColorSliderTopPos = $(".hue-horizontal").offset().top + ($(".hue-horizontal").height - $(
+								".colorBar-color-picker").height) / 2;
+							// 判断颜色选择点是否超出父元素范围 如果超出 取可以显示的最小值
+							if (leftSliderPos < touchColorSliderLeftPosMin) {
+								leftSliderPos = touchColorSliderLeftPosMin
+							} else if (leftSliderPos > touchColorSliderRightPosMax) {
+								leftSliderPos = touchColorSliderRightPosMax
+							}
+							topSliderPos = touchColorSliderTopPos;
+
+							// console.log("leftPos", leftSliderPos);
+							$(".colorBar-color-picker").css('left', leftSliderPos);
+							$(".colorBar-color-picker").css('top', topSliderPos);
+							GetCurrentColorSlider(leftSliderPos + $(".colorBar-color-picker").width() / 2, $(".hue-horizontal").width());
+							break;
+						case "touchend":
+							break;
+					}
+				}
+			};
+
+			//颜色选择条滑动		
+			function GetCurrentColorSlider(leftSliderPos, sliderWidth) {
+				// console.log("leftSliderPos", leftSliderPos);
+				colourPickerObj.hsb.h = parseInt(360 * leftSliderPos / sliderWidth);
+				// colourPickerObj.rgba.a = leftSliderPos / elem_width;
+				var rgb = colourPickerObj.HSBToRGB(colourPickerObj.hsb);
+				colourPickerObj.setPancelColor(colourPickerObj.hsb.h);
+				colourPickerObj.setShowColor();
+				colourPickerObj.setValue(rgb);
+			};
+
+			// 加载元素图标
+			function InitIcons(cid) {
+				// <div class="singleSelection">
+				// 	<img class="unselectedIcon" onclick="SelectBg(0)" src="../img/PartyA/unselected.png">
+				// 		<img class="selectedIcon hidden" onclick="SelectBg(0)" src="../img/PartyA/selected.png">
+				// 		<img class="selectionImg" onclick="SelectBg(0)" src="../img/pageLogo.png">
+				// </div>
+				// 添加元素，样例 <img src="/" id="addedModel_0" class="addedSingleElement">
+				if (bgIconCount > 0) {
+					for (var i = 0; i < bgIconCount; i++) {
+						var idx = i;
+						var url = domainName + 'ARCardAssets/Icon_' + cid + '/Background/Bg_' + idx + '.jpg';
+						// var newDomBgUrl = domainName + "ARCardAssets/" + cid + "/Background/Image_" + idx + ".png";
+						var newDivDom = $('<div class="singleSelection"></div>');
+						var newDom_0 = $('<img class="unselectedIcon" onclick="SelectBg(' + idx +
+							')" src="../img/PartyA/unselected.png">');
+						var newDom_1 = $('<img class="selectedIcon hidden" onclick="SelectBg(' + idx +
+							')" src="../img/PartyA/selected.png">');
+						var newDom_2 = $('<img class="selectionImg" onclick="SelectBg(' + idx + ')" src="' + url + '">');
+						$("#bgWrap").append($(newDivDom));
+						$(newDivDom).append($(newDom_0));
+						$(newDivDom).append($(newDom_1));
+						$(newDivDom).append($(newDom_2));
+					}
+				}
+
+				// 加载预置图片
+				// <div id="presetImageWrap" class="listWrap">
+				// 	<div class="singleSelection">
+				// 		<img class="unselectedIcon" onclick="SelectPresetImage(0)" src="../img/PartyA/unselected.png">
+				// 		<img class="selectedIcon hidden" onclick="SelectPresetImage(0)" src="../img/PartyA/selected.png">
+				// 		<img class="selectionImg" onclick="SelectPresetImage(0)" src="../img/PartyA/PresetImage_0.png">
+				// 	</div>
+				if (presetImageCount > 0) {
+					// 遍历加载预置图片
+					for (var i = 0; i < presetImageCount; i++) {
+						var idx = i;
+						var url = domainName + 'ARCardAssets/Icon_' + cid + '/Element_2D/Image_' + idx + '.jpg';
+						// console.log(url)
+						var preDivDom = $('<div class="singleSelection"></div>');
+						var preImg_0 = $('<img class="unselectedIcon" onclick="SelectPresetImage(' + idx +
+							')" src="../img/PartyA/unselected.png">');
+						// console.log(preImg_0)
+						var preImg_1 = $('<img class="selectedIcon hidden" onclick="SelectPresetImage(' + idx +
+							')" src="../img/PartyA/selected.png">');
+						// console.log(preImg_1)
+						var preImg_2 = $('<img class="selectionImg" onclick="SelectPresetImage(' + idx +
+							')" src="' + url + '">');
+						// console.log(preImg_2)
+						$("#presetImageWrap").append($(preDivDom));
+						$(preDivDom).append($(preImg_0));
+						$(preDivDom).append($(preImg_1));
+						$(preDivDom).append($(preImg_2));
+					}
+				}
+
+				// 加载模型
+				// <div id="modelWrap" class="listWrap">
+				// 	<div class="singleSelection">
+				// 		<img class="unselectedIcon" onclick="SelectModel(0)" src="../img/PartyA/unselected.png">
+				// 		<img class="selectedIcon hidden" onclick="SelectModel(0)" src="../img/PartyA/selected.png">
+				// 		<img class="selectionImg" onclick="SelectModel(0)" src="../img/PartyA/PresetImage_0.png">
+				// 	</div>
+				// console.log("modelCount", modelCount);
+				if (modelCount > 0) {
+					// 遍历加载模型图片
+					for (var i = 0; i < modelCount; i++) {
+						var idx = i;
+						var url = domainName + 'ARCardAssets/Icon_' + cid + '/Element_3D/Model_' + idx + '.jpg';
+						// console.log("url",url);
+						var modelIconDivDom = $('<div class="singleSelection"></div>');
+						var modelImg_0 = $('<img class="unselectedIcon" onclick="SelectModel(' + idx +
+							')" src="../img/PartyA/unselected.png">');
+						var modelImg_1 = $('<img class="selectedIcon hidden" onclick="SelectModel(' + idx +
+							')" src="../img/PartyA/selected.png">');
+						var modelImg_2 = $('<img class="selectionImg" onclick="SelectModel(' + idx + ')" src="' + url + '">');
+						$("#modelWrap").append($(modelIconDivDom));
+						$(modelIconDivDom).append($(modelImg_0));
+						$(modelIconDivDom).append($(modelImg_1));
+						$(modelIconDivDom).append($(modelImg_2));
+					}
+					// console.log("!!!",$("#img-wrap").children().length);
+					// console.log("???",$("#addedModels").children().length);
+				}
+			}
+
+			var isShowImgLoaded = false;
+			// 使用默认背景
+			function OnDufaultBackgroundBtnClick() {
+				// 隐藏ui
+				$("#chooseBgDiv").addClass("hidden");
+				$('.show-content').removeClass('hidden');
+				$(".clip-content").addClass("hidden");
+				// 编辑图片界面居中
+				var contentHeight = window.innerHeight - parseFloat($(".clip-action").css("height"));
+				$(".show-content").css("height", contentHeight);
+				// 显示背景图
+				var newDomBgUrl = domainName + "ARCardAssets/" + cid + "/Background/Bg_0.jpg";
+				$("#show-img").attr('src', newDomBgUrl);
+				// 显示loading，只加载一次
+				if (isShowImgLoaded == false) {
+					console.log("OnDufaultBackgroundBtnClick ShowLoadingPage");
+					ShowLoadingPage(false);
+				}
+				// 只加载一次用one
+				$("#show-img").one('load', function() {
+					isShowImgLoaded = true;
+					// 选择背景
+					ShowToolList(0);
+					SelectBg(0);
+					// 隐藏loading
+					HideLoadingPage();
+				});
+			}
+
+			// 设置拖动范围
+			function SetDraggableArea(dom, isNeedToCaculateDomSize, cursorLeftOffset, cursorTopOffset) {
+				// console.log("SetDraggableArea");
+				// 根据dom尺寸计算拖拽偏移量
+				if (isNeedToCaculateDomSize) {
+					//有transform角度的情况
+					cursorLeftOffset = dom.width() / 2;
+					cursorTopOffset = dom.height() / 2;
+					// 左上角
+					var containment_X_1 = $("#img-wrap").offset().left - dom.width() / 2;
+					// console.log("containment_X_1", containment_X_1);
+					var containment_Y_1 = $("#img-wrap").offset().top - dom.height() / 2;
+					// 右下角
+					var containment_X_2 = $("#img-wrap").offset().left + $("#img-wrap").width() - dom.width() / 2;
+					var containment_Y_2 = $("#img-wrap").offset().top + $("#img-wrap").height() - dom.height() / 2;
+				} else {
+					// 左上角
+					var containment_X_1 = $("#img-wrap").offset().left;
+					var containment_Y_1 = $("#img-wrap").offset().top;
+					// 右下角
+					var containment_X_2 = containment_X_1 + $("#img-wrap").width();
+					var containment_Y_2 = containment_Y_1 + $("#img-wrap").height();
+				}
+				// 设置拖动范围
+				dom.draggable({
+					containment: [containment_X_1, containment_Y_1, containment_X_2, containment_Y_2],
+					cursorAt: {
+						left: cursorLeftOffset,
+						top: cursorTopOffset
+					},
+				});
+			}
+
+			// 关闭其他页面
+			function CloseAllTools() {
+				$('#selectBgList').addClass("hidden");
+				$('#selectPresetImageList').addClass("hidden");
+				$('#selectModelList').addClass("hidden");
+				$('#editTextList').addClass("hidden");
+
+				$('#btn-show-bg-tool img').attr('src', '../img/BACKGROUND.png');
+				$('#btn-show-presetImages-tool img').attr('src', '../img/PRESETIMAGES.png');
+				$('#btn-show-model-tool img').attr('src', '../img/MODEL.png');
+				$('#btn-show-text-tool img').attr('src', '../img/TEXT.png');
+			}
+			var isAddedTextInitialized = false;
+			// 显示右侧工具栏
+			function ShowToolList(idx) {
+				// 关闭其他页面
+				CloseAllTools();
+
+				// 先显示元素，$('#toolsPart').width()才有值
+				$('#toolsPart').removeClass("hidden");
+				// 背景图左移居中
+				var ratio = parseFloat($('#img-wrap').css("width")) / parseFloat($('#img-wrap').css("height"));
+				var imgWrapHeight = parseFloat($('#toolsPartBg').css("height"));
+				var imgWrapWidth = imgWrapHeight * ratio;
+				$('#img-wrap').css("height", imgWrapHeight);
+				$('#img-wrap').css("width", imgWrapWidth);
+				var imgWrapTop = (window.innerHeight - parseFloat($('.nav-bar').css("height")) - imgWrapHeight) / 2;
+				var imgWrapLeft = ($('#toolsPart').offset().left - imgWrapWidth) / 2;
+				$('#img-wrap').css("top", imgWrapTop);
+				$('#img-wrap').css("left", imgWrapLeft);
+
+				if (idx == 0) {
+					// 显示bg编辑页面
+					document.querySelector('#toolsPartTitleP').innerText = "SELECT BACKGROUND";
+					$('#selectBgList').removeClass("hidden");
+					// 切换图标
+					$('#btn-show-bg-tool img').attr('src', '../img/backgroundSelected.png');
+					// console.log('bg被点击')
+				} else if (idx == 1) {
+					// 显示presetImage编辑页面
+					document.querySelector('#toolsPartTitleP').innerText = "SELECT PRESET IMAGE";
+					$('#selectPresetImageList').removeClass("hidden");
+					// 切换图标
+					$('#btn-show-presetImages-tool img').attr('src', '../img/presetImagesSelected.png');
+					// console.log('presetImage被点击')
+				} else if (idx == 2) {
+					// 显示model编辑页面
+					document.querySelector('#toolsPartTitleP').innerText = "SELECT MODEL";
+					$('#selectModelList').removeClass("hidden");
+					// 切换图标
+					$('#btn-show-model-tool img').attr('src', '../img/modelSelected.png');
+					// 加载模型
+					InitialLoadModel();
+					// console.log('model被点击')
+				} else if (idx == 3) {
+					// 切换图标
+					$('#btn-show-text-tool img').attr('src', '../img/textSelected.png');
+					if (isAddedTextInitialized == false) {
+						console.log("isAddedTextInitialized");
+						// 在背景图上显示文本元素
+						$("#addedText_0").removeClass("hidden");
+						$("#addedText_0").html($("#edit-content").val());
+						var addedTextLeft = $("#addedTexts").width() / 2 - $("#addedText_0").width() / 2;
+						var addedTextTop = $("#addedTexts").height() / 2 - $("#addedText_0").height() / 2;
+						$("#addedText_0").css('left', addedTextLeft);
+						$("#addedText_0").css('top', addedTextTop);
+						$("#addedText_0").css('transform', 'rotate(0deg)');
+						// 点击拽动不旋转，不缩放
+						$("#addedText_0").on('touchstart', function(e) {
+							isCanRotate = false;
+							isCanResize = false;
+						});
+						$("#addedText_0").on('touchend', function(e) {
+							isCanRotate = true;
+							isCanResize = true;
+							currentSelectedElement = $("#addedText_0");
+						});
+						// 设置拖动范围
+						SetDraggableArea($("#addedText_0"), true, 0, 0);
+						// 默认编辑SIZE
+						ShowFontEditorTool(0);
+
+						isAddedTextInitialized = true;
+					}
+
+					// 显示text编辑页面
+					document.querySelector('#toolsPartTitleP').innerText = "EDITOR TEXT";
+					$('#editTextList').removeClass("hidden");
+
+					// console.log('text被点击')
+				}
+			}
+
+
+			//取消所有选中
+			function UnselectAllBgSelections() {
+				// console.log("UnselectAllBgSelections");
+				for (var i = 0; i < bgIconCount; i++) {
+					$('#bgWrap').children().eq(i).children().eq(0).removeClass("hidden");
+					$('#bgWrap').children().eq(i).children().eq(1).addClass("hidden");
+				}
+			}
+			// 当前选中的背景图序列号
+			var currentBgIdx = -1;
+			// 选择bg图标
+			function SelectBg(idx) {
+				console.log("SelectBg");
+				if (idx < bgIconCount && idx != currentBgIdx) {
+					// 取消所有选中
+					UnselectAllBgSelections();
+					currentBgIdx = idx;
+					// 显示当前选中
+					$('#bgWrap').children().eq(currentBgIdx).children().eq(0).addClass("hidden");
+					$('#bgWrap').children().eq(currentBgIdx).children().eq(1).removeClass("hidden");
+					// 应用背景图
+					var newDomBgUrl = domainName + "ARCardAssets/" + cid + "/Background/Bg_" + idx + ".jpg";
+					$("#show-img").attr('src', newDomBgUrl);
+				}
+			}
+
+			// 选择PresetImage图标
+			function SelectPresetImage(idx) {
+				// console.log("SelectPresetImage: " + idx);
+				if (idx < presetImageCount) {
+					var newDomId = "addedPresetImage_" + idx;
+					// console.log("length",$('#modelWrap').children().length);
+					// 检测是否选中
+					if (CheckIfSelected($('#presetImageWrap').children().eq(idx)) == true) {
+						// 添加元素，样例 <img src="/" id="addedPresetImage_0" class="addedSingleElement">
+						// 不存在，生成新的
+						if (CheckIfCreated(newDomId) == false) {
+							var newDomBgUrl = domainName + "ARCardAssets/" + cid + "/Element_2D/Image_" + idx + ".png";
+							var newDivDom = $('<div class="addedSingleElementDiv"></div>');
+							// class 先设置为hidden
+							var newDom = $('<img src="' + newDomBgUrl + '" id="' + newDomId +
+								'" class="addedSingleElement hidden" style="transform: rotate(0deg);">');
+
+							// 图片加载完设置拖动范围
+							$(newDom).one('load', function() {
+								// 图片加载完后再显示
+								$(newDom).removeClass('hidden');
+								//设置dom位置
+								var domLeft = $(newDivDom).width() / 2 - $(newDom).width() / 2;
+								var domTop = $(newDivDom).height() / 2 - $(newDom).height() / 2;
+								$(newDom).css('left', domLeft);
+								$(newDom).css('top', domTop);
+								//设置dom拖动范围
+								SetDraggableArea($(newDom), true, 0, 0);
+
+								// 当前选中元素
+								currentSelectedElement = $(newDom);
+
+								// 点击图标拽动不旋转，不缩放
+								$(newDom).on('touchstart', function(e) {
+									isCanRotate = false;
+									isCanResize = false;
+								});
+								$(newDom).on('touchend', function(e) {
+									isCanRotate = true;
+									isCanResize = true;
+									currentSelectedElement = $(newDom);
+								});
+							});
+
+							$("#addedPresetImages").append($(newDivDom));
+							$(newDivDom).append($(newDom));
+						}
+						// 存在，不再生成，改为显示
+						else {
+							$('#' + newDomId).removeClass("hidden");
+						}
+					} else {
+						// 同时隐藏元素
+						HideSelected(newDomId);
+					}
+				}
+			}
+
+			// 选择model图标
+			function SelectModel(idx) {
+				if (idx < modelCount) {
+					var newDomId = "addedModel_" + idx;
+					// 检测是否选中
+					if (CheckIfSelected($('#modelWrap').children().eq(idx)) == true) {
+						// 显示对应模型
+						$("#" + newDomId).removeClass("hidden");
+					} else {
+						// console.log(newDomId)
+						// 隐藏对应模型
+						$("#" + newDomId).addClass("hidden");
+					}
+				}
+			}
+
+			// 关闭其他字体工具
+			function CloseAllFontEditorTools() {
+				$("#fontSizeBtn>img").attr('src', "../img/fontSize.png");
+				$("#fontSizeSliderBg").addClass("hidden");
+
+				$("#fontWeightBtn>img").attr('src', "../img/fontWeight.png");
+				$("#fontWeightSlider").addClass("hidden");
+
+				$("#fontColourBtn>img").attr('src', "../img/fontColour.png");
+				$("#fontColourSlider").addClass('hidden');
+			}
+
+			var currentFontEditorToolIdx;
+			// 显示字体工具
+			function ShowFontEditorTool(idx) {
+				CloseAllFontEditorTools();
+				// 当前选中元素
+				currentSelectedElement = $("#addedText_0");
+				// 改变字体大小
+				if (idx == 0) {
+					$("#fontSizeBtn>img").attr('src', "../img/fontSizeSelected.png");
+					$("#fontSizeSliderBg").removeClass("hidden");
+					// 给可编辑的input框移除hidden 
+					$("#edit-content").removeClass("hidden");
+				} //改变字体粗细
+				else if (idx == 1) {
+					$("#fontWeightBtn>img").attr('src', "../img/fontWeightSelected.png");
+					$("#fontWeightSlider").removeClass("hidden");
+					// 给可编辑的input框移除hidden 
+					$("#edit-content").removeClass("hidden");
+				} //改变字体颜色
+				else if (idx == 2) {
+					$("#fontColourBtn>img").attr('src', "../img/fontColourSelected.png");
+					$("#fontColourSlider").removeClass("hidden");
+					// 模拟点击显示颜色的div
+					$("#colour-picker").trigger("click");
+				}
+				currentFontEditorToolIdx = idx;
+			}
+
+
+			// 修改text内容
+			function EditorTextDone(str) {
+				$("#addedText_0").html(str);
+				//收回软键盘
+				OnTextInputFocusOut();
+				//限定文本框宽度
+				CheckTextWidth();
+				// 设置拖动范围
+				SetDraggableArea($("#addedText_0"), true, 0, 0);
+			}
+			// 软键盘弹出
+			function OnTextInputFocusIn() {
+				CloseAllFontEditorTools();
+				$("#fontSelections").addClass('hidden');
+				$('#img-wrap').addClass('hidden');
+				$('.nav-bar').addClass('hidden');
+				$("#edit-content").css("top", "30%");
+				console.log("软键盘弹出");
+			}
+			// 软键盘收回
+			function OnTextInputFocusOut() {
+				ShowFontEditorTool(currentFontEditorToolIdx);
+				$('#fontSelections').removeClass('hidden');
+				$('#img-wrap').removeClass('hidden');
+				$('.nav-bar').removeClass('hidden');
+				$("#edit-content").css("top", "55%");
+				console.log("软键盘收回");
+			}
+
+			// 改变字体大小
+			function UpdateFontSizeSlider(value) {
+				$("#addedText_0").css({
+					fontSize: value + "px"
+				});
+				//限定文本框宽度
+				CheckTextWidth();
+				// 设置拖动范围
+				SetDraggableArea($("#addedText_0"), true, 0, 0);
+			}
+			// 改变字体正长或者加粗
+			function UpdateFontWeightSlider(value) {
+				// console.log(value);
+				if (value == 0) {
+					$("#weightImg").css({
+						left: 32 + '%'
+					});
+					$("#addedText_0").css("font-weight", "normal");
+					// $("#addedText_0").css("font-family", "thin");
+
+				} else {
+					$("#weightImg").css({
+						left: 57 + '%'
+					});
+					$("#addedText_0").css("font-weight", "bold");
+					// $("#addedText_0").css("font-family", "bold");
+				}
+			}
+			//限定文本框宽度
+			function CheckTextWidth() {
+				if ($("#addedText_0").width() > $("#addedTexts").width() * 0.95) {
+					$("#addedText_0").css('width', $("#addedTexts").width() * 0.95);
+				}
+			}
+
+			// 判断是否选中，同时切换选中icon
+			function CheckIfSelected(el) {
+				// console.log("checkIfSelected", el);
+				// 未选中，显示选中，字符串不包含会返回-1
+				// console.log(el.children[0].className.indexOf("hidden"));
+				if (el.children().eq(0).hasClass("hidden") == false) {
+					// console.log("return true");
+					// 隐藏未选中
+					el.children().eq(0).addClass("hidden");
+					// 显示选中
+					el.children().eq(1).removeClass("hidden");
+					return true;
+				}
+				// 否则显示未选中
+				else {
+					// console.log("return false");
+					// 显示未选中
+					el.children().eq(0).removeClass("hidden");
+					// 隐藏选中
+					el.children().eq(1).addClass("hidden");
+					return false;
+				}
+			}
+			//判断是否已生成元素
+			function CheckIfCreated(id) {
+				//存在
+				if ($('#' + id).length > 0) {
+					return true;
+				}
+				//不存在
+				else {
+					return false;
+				}
+			}
+			//隐藏
+			function HideSelected(id) {
+				// console.log(id, '关闭')
+				$("#" + id).addClass("hidden");
+			}
+
+			var modelLoadDone = false;
+			var isLoadingModel = false;
+			/* 初始加载 */
+			function InitialLoadModel() {
+				// modelLoaded 防止二次加载
+				if (modelLoadDone == false && isLoadingModel == false) {
+					console.log("three init start...");
+					isLoadingModel = true;
+					ShowLoadingPage(false);
+					SetModelDraggableArea();
+					InitModel();
+				}
+			};
+			// 设置Model拖动范围，放在这里因为此时$("#img-wrap")才确定宽高
+			function SetModelDraggableArea() {
+				// 坐标原点在屏幕左上角
+				// 左上角
+				var containment_X_1 = $("#img-wrap").offset().left;
+				var containment_Y_1 = $("#img-wrap").offset().top;
+				// 右下角
+				var containment_X_2 = containment_X_1 + $("#img-wrap").width();
+				var containment_Y_2 = containment_Y_1 + $("#img-wrap").height();
+				// 生成模型dom
+				// 样例: <!-- <div id="addedModel" class="addedModelElement"></div> -->					
+				for (var i = 0; i < modelCount; i++) {
+					var idx = i;
+					var modelId = "addedModel_" + idx;
+					var modelDivDom = $('<div id="addedModel_' + idx +
+						'" class="addedModelElement hidden"></div>');
+					// console.log(modelDivDom)
+					$("#addedModels").append($(modelDivDom));
+					// console.log('????','"#addedModel_'+idx+'"')
+					$("#" + modelId).draggable({
+						containment: [containment_X_1, containment_Y_1, containment_X_2, containment_Y_2],
+						// 设置拖拽偏移量
+						cursorAt: {
+							top: 0,
+							left: 0
+						},
+					});
+				}
+			}
+			/* 初始化模型 */
+			function InitModel() {
+				for (var i = 0; i < modelCount; i++) {
+					// 加载模型的方法
+					var scene, camera, renderer;
+					// initScene
+					scene = new THREE.Scene();
+					scene.name = "scene_" + i;
+					// console.log("scene.name",scene.name);
+
+					// initCamera
+					camera = new THREE.PerspectiveCamera(45, $("#img-wrap").width() / $("#img-wrap").height(), 1, 10000);
+					camera.name = "camera_" + i;
+					// console.log("camera.name",camera.name);
+					camera.position.set(0, 0, 12);
+					camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+					// initRender
+					renderer = new THREE.WebGLRenderer({
+						antialias: true,
+						alpha: true
+					});
+					renderer.name = "renderer_" + i;
+					// console.log("renderer.name",renderer.name);
+					// 设置模型所在画布大小
+					renderer.setSize($("#img-wrap").width(), $("#img-wrap").height());
+					// console.log("modelCount", i);
+
+					// 给各个模型添加canvas
+					$("#addedModel_" + i).append(renderer.domElement);
+
+					// 点击图标拽动不旋转，不缩放
+					$("#addedModel_" + i).on('touchstart', function(e) {
+						isCanRotate = false;
+						isCanResize = false;
+					});
+					$("#addedModel_" + i).on('touchend', function(e) {
+						isCanRotate = true;
+						isCanResize = false;
+					});
+
+					// initLight
+					var ambientLight = new THREE.AmbientLight(0xffffff);
+					ambientLight.intensity = 3;
+					scene.add(ambientLight);
+
+					// 加载并存储模型到场景中
+					InitContent(scene, camera, renderer, i);
+				}
+
+				// initLight();
+				//控制移动
+				// initControls();
+				// initContent();
+				// initGui();
+
+				/* 监听事件 */
+				// window.addEventListener('resize', onWindowResize, false);
+			}
+			// 加载成功的模型数目，用于判断模型是否全部加载完毕
+			var loadedModelCount = 0;
+			/* 场景中的内容 */
+			function InitContent(scene, camera, renderer, i) {
+				var idx = i;
+				// console.log("scene.name", scene.name);
+				// 加载 glTF 格式的模型
+				let loader = new THREE.GLTFLoader(); /*实例化加载器*/
+				// console.log("addedModels length",$("#addedModels").children().length);
+				// for (var i = 0; i < $("#addedModels").children().length; i++) {
+				var modelUrl = domainName + 'ARCardAssets/' + cid + '/Element_3D/Model_' + idx + '.glb';
+				// var modelUrl = '../model/Model_0.glb';
+				// console.log("modelUrl", modelUrl);
+				loader.load(modelUrl, function(
+					obj) {
+					// 让模型居中
+					// 注意，gltf要用obj.scene而不是obj
+					var box = new THREE.Box3().setFromObject(obj.scene);
+					var boundingBoxSize = box.max.sub(box.min);
+					var height = boundingBoxSize.y;
+					// console.log("boundingBoxSize.y",height);
+					obj.scene.position.y = -height / 2;
+					scene.add(obj.scene);
+					//开始渲染
+					animate(scene, camera, renderer);
+					// document.getElementById('model-canvas').style.display = 'none';
+				}, function(xhr) {
+					// var X= this.getBoundingClientRect().left;
+					var percent = xhr.loaded / xhr.total * 100;
+					console.log("model idx", idx);
+					// console.log(percent + '% loaded');
+					if (percent == 100) {
+						loadedModelCount++;
+						console.log("Model", idx, "loaded done");
+						if (loadedModelCount == $("#addedModels").children().length) {
+							modelLoadDone = true;
+							console.log("All Model Loaded");
+							//隐藏loading
+							HideLoadingPage();
+						}
+					}
+
+				}, function(error) {
+					console.log('load error!' + error);
+					// 隐藏loading
+					HideLoadingPage();
+				});
+				// }
+				// molion.tech\YiDaAR\ARCardAssets\0\Element_3D
+				// https://molion.tech/test/YiDaAR/ARCardAssets/01
+			}
+			// 每帧调用，渲染模型
+			function animate(scene, camera, renderer) {
+				requestAnimationFrame(function() {
+					animate(scene, camera, renderer);
+				});
+				renderer.render(scene, camera);
+				// update();
+			}
+
+			var isCanCloseLoadingPage = false;
+			var canCloseTimer;
+			// 显示加载页面
+			function ShowLoadingPage(isCanTouchToClose, canCloseTime = 0) {
+				console.log("ShowLoadingPage");
+				isCanCloseLoadingPage = false;
+				$("#loading-page").removeClass("hidden");
+				if (isCanTouchToClose) {
+					//一定时间后点击loaind使其消失（防止卡住）
+					canCloseTimer = setTimeout(function() {
+						isCanCloseLoadingPage = true;
+						console.log("isCanCloseLoadingPage");
+					}, canCloseTime);
+				}
+			}
+			//点击loadin页面关闭
+			function OnLoadingPageClick() {
+				if (isCanCloseLoadingPage == true) {
+					HideLoadingPage();
+				}
+			}
+			// 隐藏加载页面
+			function HideLoadingPage() {
+				// 清除定时器
+				clearTimeout(canCloseTimer);
+				isCanCloseLoadingPage = false;
+				$("#loading-page").addClass("hidden");
+			}
+
+			var originalWidth = document.documentElement.clientWidth;
+			var originalHeight = document.documentElement.clientHeight;
+			// 强制横屏
+			var detectOrient = function() {
+				// console.log("detectOrient", document.documentElement.clientHeight);
+				var width = document.documentElement.clientWidth,
+					height = document.documentElement.clientHeight,
+					wrapper = document.getElementById("main"),
+					style = "";
+				if (width >= height) {
+					// 横屏
+					style += "width:" + width + "px;";
+					style += "height:" + height + "px;";
+					style += "-webkit-transform: rotate(0); transform: rotate(0);";
+					style += "-webkit-transform-origin: 0 0;";
+					style += "transform-origin: 0 0;";
+					// 隐藏竖屏遮罩
+					$('#portrait-screen').addClass('hidden');
+					if (isCardCreated) {
+						$('#final-page').removeClass('hidden');
+					}
+					// console.log("style 0: ", style);
+					isLandScape = true;
+					// console.log("isWaitingToShowPhoto: " + isWaitingToShowPhoto);
+					//竖屏拍照后，旋转至横屏再处理
+					if (isWaitingToShowPhoto == true) {
+						console.log("竖屏拍照后，旋转至横屏再处理");
+						loadImg(img_b64);
+						isWaitingToShowPhoto = false;
+					}
+					// 显示生成的图片时，不显示main
+					if ($("#final-page").hasClass("hidden")) {
+						$('#main').removeClass('hidden');
+					}
+				} else {
+					// 竖屏
+					style += "width:" + height + "px;"; // 注意旋转后的宽高切换
+					style += "height:" + width + "px;";
+					style += "-webkit-transform: rotate(90deg); transform: rotate(90deg);";
+					// 注意旋转中点的处理
+					style += "-webkit-transform-origin: " + width / 2 + "px " + width / 2 + "px;";
+					style += "transform-origin: " + width / 2 + "px " + width / 2 + "px;";
+					// 显示竖屏遮罩
+					$('#portrait-screen').removeClass('hidden');
+					$('#main').addClass('hidden');
+					if (isCardCreated) {
+						document.querySelector('#final-page').classList.add('hidden')
+					}
+					// console.log("style 1: ", style);
+					isLandScape = false;
+				}
+				wrapper.style.cssText = style;
+			}
+			window.onresize = detectOrient;
+			detectOrient();
+
+			function loadImg(b64) {
+				changeImgClipShow(true);
+
+				var img = new Image();
+				img.src = b64;
+				// console.log(img.width,img.height);
+				img.onload = function() {
+					EXIF.getData(img, function() {
+						console.log("loadImg onload");
+						// 隐藏loading页面
+						HideLoadingPage();
+						// 把Bg隐藏
+						document.querySelector('.clip-img').classList.add('hidden');
+						var orientation = EXIF.getTag(this, 'Orientation');
+
+						cropImage && cropImage.destroy();
+						cropImage = new ImageClip({
+							container: '.img-clip',
+							img,
+							// 0代表按下才显示，1恒显示，-1不显示
+							sizeTipsStyle: 0,
+							// 为1一般是屏幕像素x2这个宽高
+							// 最终的大小为：屏幕像素*屏幕像素比（手机中一般为2）*compressScaleRatio
+							compressScaleRatio: 1.1,
+							// iphone中是否继续放大：x*iphoneFixedRatio
+							// 最好compressScaleRatio*iphoneFixedRatio不要超过2
+							iphoneFixedRatio: 1.8,
+							// 减去顶部间距，底部bar,以及显示间距 
+							// maxCssHeight: window.innerHeight - 100 - 50 - 20,
+							maxCssHeight: window.innerHeight - 50 - 50 - 20,
+							// 放大镜捕获的图像半径
+							captureRadius: 30,
+							// 是否采用原图像素（不会压缩）
+							isUseOriginSize: false,
+							// 增加最大宽度，增加后最大不会超过这个宽度
+							// maxWidth: 0,
+							maxWidth: document.documentElement.clientWidth,
+
+							// 是否固定框高，优先级最大，设置后其余所有系数都无用直接使用这个固定的宽，高度自适应
+							forceWidth: 0,
+							// 同上，但是一般不建议设置，因为很可能会改变宽高比导致拉升，特殊场景下使用
+							forceHeight: 0,
+							// 压缩质量
+							quality: 0.92,
+							mime: 'image/jpeg',
+						});
+
+						// 6代表图片需要顺时针修复（默认逆时针处理了，所以需要顺过来修复）
+						switch (orientation) {
+							case 6:
+								cropImage.rotate(true);
+								break;
+							default:
+								break;
+						}
+
+						//让clip-content上下顶到头
+						// console.log("window.document.clientHeight", window.innerHeight);
+						// console.log("clip-action height", $('.clip-action').css('height'));
+						var clipContentHeight = parseFloat(window.innerHeight - $('.clip-action').css('height'));
+						$(".clip-content").css("height", clipContentHeight);
+						$(".clip-content").css("bottom", $('.clip-action').css('height'));
+					});
+				};
+			}
+
+			function resizeShowImg(b64) {
+				var img = new Image();
+				img.src = b64;
+				// console.log("resizeShowImg width", img.width);
+				// console.log("resizeShowImg height", img.height);
+				img.onload = function() {
+					showImgOnload(img);
+				}
+				// img.onload = showImgOnload;
+			}
+
+			function showImgOnload(img) {
+				// console.log("showImgOnload");
+				// 必须用一个新的图片加载，否则如果只用showImg的话永远都是第1张
+				// margin的话由于有样式，所以自动控制了
+				var width = img.width;
+				var height = img.height;
+				// console.log("showImgOnload width", width);
+				// console.log("showImgOnload height", height);
+				var wPerH = width / height;
+				// console.log("showImgOnload wPerH", wPerH);
+				var MAX_WIDTH = Math.min(window.innerWidth, width);
+				var MAX_HEIGHT = Math.min(window.innerHeight - 50 - 80, height);
+				var legalWidth = MAX_WIDTH;
+				var legalHeight = legalWidth / wPerH;
+				// console.log("legalWidth", legalWidth);
+				// console.log("legalHeight", legalHeight);
+
+				if (MAX_WIDTH && legalWidth > MAX_WIDTH) {
+					legalWidth = MAX_WIDTH;
+					legalHeight = legalWidth / wPerH;
+				}
+				if (MAX_HEIGHT && legalHeight > MAX_HEIGHT) {
+					legalHeight = MAX_HEIGHT;
+					legalWidth = legalHeight * wPerH;
+				}
+
+				// 让裁剪后的图片居中
+				// 不显示tool右侧工具栏的情况
+				if ($("#toolsPart").hasClass('hidden') == true) {
+					// console.log("#toolsPart hide");
+					$('#img-wrap').css('right', (window.innerWidth - legalWidth) / 2 + 'px');
+					$('#img-wrap').css('top', ($('.show-content').height() - legalHeight) / 2 + 'px');
+
+					$('#img-wrap').css('width', legalWidth + 'px');
+					$('#img-wrap').css('height', legalHeight + 'px');
+				}
+				// 显示tool右侧工具栏的情况
+				else {
+					// console.log("#toolsPart show");
+					// 背景图左移居中
+					var ratio = parseFloat($('#img-wrap').css("width")) / parseFloat($('#img-wrap').css("height"));
+					var imgWrapHeight = parseFloat($('#toolsPartBg').css("height"));
+					var imgWrapWidth = imgWrapHeight * ratio;
+					$('#img-wrap').css("height", imgWrapHeight);
+					$('#img-wrap').css("width", imgWrapWidth);
+					var imgWrapTop = (window.innerHeight - parseFloat($('.nav-bar').css("height")) - imgWrapHeight) / 2;
+					var imgWrapLeft = ($('#toolsPart').offset().left - imgWrapWidth) / 2;
+					$('#img-wrap').css("top", imgWrapTop);
+					$('#img-wrap').css("left", imgWrapLeft);
+				}
+			}
+
+			function changeImgClipShow(isClip) {
+				if (isClip) {
+					$("#choose-gallery").addClass('hidden');
+					$("#choose-camera").addClass('hidden');
+					$(".clip-action").removeClass('hidden');
+				} else {
+					$("#choose-gallery").removeClass('hidden');
+					$("#choose-camera").removeClass('hidden');
+					$(".clip-action").addClass('hidden');
+					// 需要改变input，否则下一次无法change
+					$("#targetImg").val('');
+					$("#targetImgCamera").val('');
+				}
+			}
+
+			function showImgDataLen(imgData) {
+				var len = imgData.length;
+				var sizeStr = len + 'B';
+
+				if (len > 1024 * 1024) {
+					sizeStr = (Math.round(len / (1024 * 1024))).toString() + 'MB';
+				} else if (len > 1024) {
+					sizeStr = (Math.round(len / 1024)).toString() + 'KB';
+				}
+
+				tips('处理后大小：' + sizeStr);
+			}
+
+			function tips(msg, isAlert) {
+				if (isAlert) {
+					alert(msg);
+				} else {
+					toast(msg);
+				}
+			}
+
+			function toast(message) {
+				console.log("toast");
+				var CLASS_ACTIVE = 'mui-active';
+				var duration = 2000;
+				var toastDiv = document.createElement('div');
+
+				toastDiv.classList.add('mui-toast-container');
+				toastDiv.innerHTML = `<div class="mui-toast-message">${message}</div>`;
+				toastDiv.addEventListener('webkitTransitionEnd', () => {
+					if (!toastDiv.classList.contains(CLASS_ACTIVE)) {
+						toastDiv.parentNode.removeChild(toastDiv);
+						toastDiv = null;
+					}
+				});
+				// 点击则自动消失
+				toastDiv.addEventListener('click', () => {
+					toastDiv.parentNode.removeChild(toastDiv);
+					toastDiv = null;
+				});
+				document.body.appendChild(toastDiv);
+				toastDiv.classList.add(CLASS_ACTIVE);
+				setTimeout(function() {
+					toastDiv && toastDiv.classList.remove(CLASS_ACTIVE);
+				}, duration);
+			}
+
+			//裁剪图片，切换UI
+			function changeContent(isShowContent) {
+				console.log("changeContent", isShowContent);
+				if (isShowContent) {
+					$('.show-content').removeClass('hidden');
+					$(".clip-content").addClass("hidden");
+
+					resizeShowImg(imgData);
+					$("#show-img").attr("src", imgData);
+
+					//清空背景图选中
+					UnselectAllBgSelections();
+				} else {
+					$('.show-content').addClass('hidden');
+					$(".clip-content").removeClass("hidden");
+				}
+			}
+
+			function b64ToBlob(urlData) {
+				var arr = urlData.split(',');
+				var mime = arr[0].match(/:(.*?);/)[1] || 'image/png';
+				// 去掉url的头，并转化为byte
+				var bytes = window.atob(arr[1]);
+
+				// 处理异常,将ascii码小于0的转换为大于0
+				var ab = new ArrayBuffer(bytes.length);
+				// 生成视图（直接针对内存）：8位无符号整数，长度1个字节
+				var ia = new Uint8Array(ab);
+				for (var i = 0; i < bytes.length; i++) {
+					ia[i] = bytes.charCodeAt(i);
+				}
+
+				return new Blob([ab], {
+					type: mime
+				});
+			}
+
+			function recognizeImg(success, error) {
+				// 里面正常有：裁边，摆正，梯形矫正，锐化等算法操作
+				success();
+			}
+
+			var showToast = false;
+			var afterCanvasImageHide = true;
+			//保存截图
+			function saveScreenShot() {
+				// 获取想要转换的dom节点
+				var dom = document.getElementById('img-wrap');
+				var box = window.getComputedStyle(dom);
+				// dom节点计算后宽高
+				var width = this.parseValue(box.width);
+				var height = this.parseValue(box.height);
+				// 获取像素比
+				var scaleBy = this.getDpr();
+				// 创建自定义的canvas元素
+				var canvas = document.createElement('canvas');
+				// 设置canvas元素属性宽高为 DOM 节点宽高 * 像素比
+				canvas.width = width * scaleBy;
+				canvas.height = height * scaleBy;
+				// 设置canvas css 宽高为DOM节点宽高
+				canvas.style.width = width + 'px';
+				canvas.style.height = height + 'px';
+				// 获取画笔
+				var context = canvas.getContext('2d');
+				// 将所有绘制内容放大像素比倍
+				context.scale(scaleBy, scaleBy);
+				// 设置需要生成的图片的大小，不限于可视区域（即可保存长图）
+				var w = document.getElementById('final-page').style.width;
+				var h = document.getElementById('final-page').style.height;
+
+				html2canvas(dom, {
+					tainttest: true,
+					allowTaint: true,
+					width: w,
+					height: h,
+					useCORS: true
+				}).then(function(canvas) {
+					// 将canvas转换成图片渲染到页面上
+					uploadImageUrl = canvas.toDataURL('image/png'); // base64数据
+					var image = new Image();
+					image.crossOrigin = 'Anonymous';
+					image.src = uploadImageUrl;
+					document.getElementById('shareImg').appendChild(image);
+
+					//显示合成时的loading界面
+					ShowLoadingPage(true, 2000);
+					//等待合成
+					$(image).on('load', function() {
+						//保存贺卡宽高
+						cardWidth = image.width;
+						cardHeight = image.height;
+						//跳转到最后一页
+						GoToFinalPage(image);
+					});
+				});
+			}
+
+			// 获取模型的 X,Y坐标
+			function GetModelPos() {
+				// 模型列表存在模型则计算
+				if ($("#addedModel_0").length > 0) {
+					console.log("getModelPos");
+					modelPosArr = new Array();
+					for (var i = 0; i < $("#addedModels").children().length; i++) {
+						idx = i;
+						// 判断是否选中
+						if ($("#modelWrap").children().eq(idx).children().eq(0).hasClass("hidden")) {
+							// 选中
+							// position()计算的是相对父物体的位置
+							// 模型位置取div中点 并四舍五入取整
+							modelPos_X = $("#addedModel_" + idx).position().left + $("#addedModel_" + idx).width() / 2;
+							modelPos_Y = $("#addedModel_" + idx).position().top + $("#addedModel_" + idx).height() / 2;
+							// console.log("modelPos_X", modelPos_X);
+							// console.log("modelPos_Y", modelPos_Y);
+							// 将坐标原点放到$("#modelWrap")中心,转换坐标
+							modelPos_X = modelPos_X - $("#img-wrap").width() / 2;
+							modelPos_Y = -(modelPos_Y - $("#img-wrap").height() / 2);
+							// 改成比例，比如100*100的画布里，(-50, 50)就是(-1, 1)
+							modelPos_X = modelPos_X / ($("#img-wrap").width() / 2);
+							modelPos_Y = modelPos_Y / ($("#img-wrap").height() / 2);
+							// console.log("new modelPos_X", modelPos_X);
+							// console.log("new modelPos_Y", modelPos_Y);
+							// 用于返回后台的数据
+							var modelObj = '{"model_' + idx + '": {"modelPos_X": ' + modelPos_X + ',"modelPos_Y": ' + modelPos_Y + ' }}';
+							modelPosArr.push(modelObj);
+						} else {
+							// 未选中
+							// 用于返回后台的数据
+							var modelObj = '{"model_' + idx + '": {"modelPos_X": ' + (-9999) + ',"modelPos_Y": ' + (-9999) + ' }}';
+							modelPosArr.push(modelObj);
+						}
+					}
+					modelPosArr = "[" + modelPosArr + "]";
+				}
+			}
+
+			function GoToFinalPage(image) {
+				//跳转页面
+				$("#main").addClass("hidden");
+				//关闭合成loading界面
+				// $("#loading-page").addClass("hidden");
+				HideLoadingPage();
+				//显示合成页面
+				$("#final-page").removeClass("hidden");
+				// finalpage.classList.remove('hidden');
+				// 同时上传截图
+				upload(function() {
+					tips('Successfully Upload');
+				});
+
+				isCardCreated = true;
+
+				screenWidth = document.documentElement.clientWidth,
+					screenHeight = document.documentElement.clientHeight,
+					style = '';
+
+				if (screenWidth >= screenHeight) {
+					//如果图片高更接近屏幕高
+					if ($("#show-img").height() / screenHeight >= $("#show-img").width() / screenWidth) {
+						//只设置height，图片按比例缩放
+						style += "height:" + screenHeight + "px;";
+						// style += "width:" + width + "px;";不用设置width
+						// console.log("style 0: ", style);
+					}
+					//如果图片宽更接近屏幕宽
+					else {
+						style += "width:" + screenWidth + "px;";
+						// console.log("style 1: ", style);
+					}
+				} else {
+					//生成时竖屏等待横屏后再操作
+					//todo
+				}
+				// console.log(style);
+				image.style.cssText = style;
+			};
+
+			function upload(success, error) {
+				success();
+
+				var formData = new FormData();
+				formData.append("photoUrl", uploadImageUrl);
+				formData.append("cId", cid);
+				formData.append("uId", uid);
+				// console.log("cardWidth", cardWidth);
+				// console.log("cardHeight", cardHeight);
+				formData.append("cardWidth", cardWidth);
+				formData.append("cardHeight", cardHeight);
+				formData.append("modelPosArr", modelPosArr);
+
+				$.ajax({
+					url: domainName + 'yida-ar-admin/public/index.php/yida',
+					// url: 'http://192.168.1.25/yida-ar-admin/public/index.php/yida',
+					async: false,
+					type: "POST",
+					data: formData,
+					dataType: "json",
+					processData: false,
+					contentType: false,
+					success: function(data) {
+						console.log(data);
+					},
+					error: function(xhr) {
+						console.log("error");
+					}
+				});
+			}
+			/**
+			 * 将传入值转为整数
+			 * @param value
+			 * @returns {number}
+			 */
+			function parseValue(value) {
+				return parseInt(value, 10);
+			}
+
+			/**
+			 * 根据 window.devicePixelRatio 获取像素比
+			 * @returns {number}
+			 * @constructor
+			 */
+			function getDpr() {
+				// console.log("getDpr");
+				if (window.devicePixelRatio && window.devicePixelRatio > 1) {
+					return window.devicePixelRatio;
+				}
+				return 1;
+			}
+		</script>
+
+	</body>
+
+</html>

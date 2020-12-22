@@ -1,0 +1,817 @@
+/* @font-face {
+	font-family: thin;
+	src: url(../font/NotoSansHans-Thin-Windows.ttf);
+}
+
+@font-face {
+	font-family: bold;
+	src: url(../font/NotoSansHans-Black.ttf);
+}
+ */
+html {
+	touch-action: none;
+}
+
+body {
+	background: #fff;
+	background-size: 100%;
+	display: flex;
+	display: -webkit-box;
+}
+
+
+#main {
+	width: 100%;
+	height: 100%;
+	transform: rotate(0deg);
+	transform-origin: 0px 0px;
+}
+
+
+.upload-pretty input {
+	/*定位相关*/
+	position: absolute;
+	top: 0;
+	right: 0;
+	/*文字排版*/
+	/*这一点很重要,设置字体后,input宽度会变宽,否则无法充满父级div
+     具体为font-size越大,越宽,一般认为100px就足矣*/
+	font-size: 100px;
+	/*其它*/
+	opacity: 0;
+	cursor: pointer;
+}
+
+.clip-img {
+	width: 8em;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+
+.upload-btn {
+	width: 7.5em;
+	margin-top: 1.3em;
+	/* margin-left: 0.3em; */
+}
+
+
+
+/**
+ * tab布局，不采用mui重新写
+ */
+
+.nav-bar {
+	position: fixed;
+	z-index: 10;
+	right: 0;
+	left: 0;
+	height: 44px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-bottom: 0;
+	/* background-color: #f7f7f7; */
+	/* background-color: #FCFCF4; */
+	-webkit-box-shadow: 0 0 1px transparent;
+	/* box-shadow: 0 0 1px rgba(0, 0, 0, .85); */
+	box-shadow: 0 0 1px transparent;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+
+}
+
+/* 制定弹框的样式 */
+.pop-main {
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+	position: fixed;
+	background: rgba(0, 0, 0, 0.5);
+	top: 0;
+	left: 0;
+}
+
+#loadingImg {
+	width: 10%;
+	position: absolute;
+	top: 40%;
+	left: 45%;
+	animation: loadingAni 3s;
+	animation-iteration-count: infinite;
+}
+
+@keyframes loadingAni {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* 弹出层背景图片和样式 */
+#applyClipTipBg {
+	/* z-index: 33; */
+	background: url(../../img/confirmBg.png) no-repeat;
+	background-size: 100% 100%;
+	position: absolute;
+	height: 100px;
+	width: 200px;
+	background-color: #fff;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+/* 弹出层背景图片和样式 */
+#applyAllTipBg {
+	/* z-index: 33; */
+	background: url(../../img/confirmAllBg.png) no-repeat;
+	background-size: 100% 100%;
+	position: absolute;
+	height: 100px;
+	width: 200px;
+	background-color: #fff;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+/* 按钮父级 */
+.btn-select {
+	margin-top: 75px;
+	margin-left: 23px;
+}
+
+.btn-select input {
+	width: 70px;
+}
+
+/* 弹出框按钮 */
+.cancel {
+	margin-right: 15px;
+}
+
+/* tab-bar按钮位置样式 */
+.nav-bar-tab .tab-item .best1 {
+	width: 2.8em;
+}
+
+.nav-bar-tab .tab-item .best2 {
+	width: 80%;
+	text-align: center;
+}
+
+.nav-bar-tab .tab-item .best3 {
+	width: 80%;
+	text-align: center;
+}
+
+.nav-bar-tab .tab-item .best4 {
+	width: 80%;
+	text-align: center;
+}
+
+.nav-bar-tab .tab-item .best5 {
+	width: 80%;
+	text-align: center;
+}
+
+.nav-bar-tab .tab-item .best6 {
+	width: 2.8em;
+	margin-left: 0.3em;
+}
+
+.show-img {
+	/* width: 100%; */
+	/* height: auto; */
+	height: 100%;
+}
+
+/* 图片logo的位置 */
+.img-preset {
+	width: 45px;
+	height: 45px;
+	position: absolute;
+	top: 0.5rem;
+	left: 0.4rem;
+}
+
+.single {
+	position: relative;
+	width: 65px;
+	margin: auto 0;
+}
+
+.single img {
+	/* line-height: 30px; */
+	width: 30px;
+}
+
+.single .finger-heart {
+	width: 18px;
+}
+
+.single .checked {
+	width: 12px;
+	position: absolute;
+	bottom: 80%;
+	left: 70%;
+}
+
+/* 编辑文字样式 */
+#text-edit {
+	position: relative;
+	left: 65%;
+	border: 2px dashed #000;
+	top: 50px;
+	width: 205px;
+	height: 240px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+
+ul {
+	list-style: none;
+	overflow: hidden;
+}
+
+#fontSelections {
+	position: absolute;
+	width: 100%;
+	height: 25%;
+	top: 5%;
+}
+
+.fontSelection {
+	position: relative;
+	width: 33.33%;
+	height: 50%;
+	 float: left;
+	/*font-size: 12px;*/
+	text-align: center; 
+}
+
+#fontSizeSliderBg {
+	position: absolute;
+	width: 100%;
+	height: 20%;
+	top: 25%;
+}
+
+#fontSizeSliderBgImg {
+	position: absolute;
+	width: 100%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+input[type="range"] {
+	-webkit-appearance: none;
+	overflow: hidden;
+	/* 限定範圍 */
+	/* width:200px;
+  height:20px; */
+	outline: none;
+	/* 避免點選會有藍線或虛線 */
+	background: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+	-webkit-background: none;
+	/* width: 100%; */
+	/* cursor: pointer; */
+	background: transparent;
+	/* Hides the slider so custom styles can be added */
+	border-color: transparent;
+	color: transparent;
+}
+
+/* Special styling for WebKit/Blink */
+input[type=range]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	
+	height: 30px;
+	width: 30px;
+	background: transparent;
+	background-image: url(../../img/fontSizeSliderThumb.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+input[type=range]:focus {
+	outline: none;
+	/* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+#fontSizeSlider {
+	position: absolute;
+	width: 95%;
+	height: 100%;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -30%);
+}
+
+/* 字体的weight */
+#fontWeightSlider {
+	background: url(../../img/bgweight.png) no-repeat;
+	background-size: 100%;
+	position: absolute;
+	width: 100%;
+	height: 20%;
+	top: 30%;
+}
+
+#weightImg {
+	position: absolute;
+	left: 32%;
+	width: 15px;
+}
+
+/* 设置字体颜色*/
+#fontColourSlider {
+	/* 	background: url(../../img/fontSizeSilder.png) no-repeat;
+	background-size: 100%; */
+	position: absolute;
+	width: 100%;
+	height: 20%;
+	top: 25%;
+}
+
+.size-select span {
+	/* 	width: 30px;
+	height: 30px; */
+	/* border-radius: 50%; */
+	background-color: #0062CC;
+	margin: 0 10px;
+}
+
+#fontColourSlider span {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	/* background-color: blue; */
+}
+
+#fontColourSlider span:nth-child(1) {
+	/* left: 6%; */
+	position: relative;
+	float: left;
+	margin-left: 18%;
+	background-color: #FB7E00;
+}
+
+#fontColourSlider span:nth-child(2) {
+	position: relative;
+	float: left;
+	margin-left: 18%;
+	background-color: #2F47D6;
+}
+
+#fontColourSlider span:nth-child(3) {
+	position: relative;
+	/* left: 39%; */
+	float: left;
+	margin-left: 18%;
+	background-color: #8A4797;
+}
+
+
+#text-content li {
+	top: 3.75em;
+	width: 100%;
+	height: 1.875em;
+	/* 	width: 100%;
+	height: 100%; */
+	position: absolute;
+	padding: 10px;
+	/* display: none */
+}
+
+/* .size-select span:nth-child(odd){
+	width: 10px;
+	height: 1px;
+	background-color: #2AC845;
+} */
+#edit-content {
+	height: 1.875em;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	position: absolute;
+	top: 55%;
+	width: 80%;
+	left: 10%;
+	background-color: #c5c5c5;
+}
+
+.img-wrapper {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+}
+
+.img-wrapper>img {
+	width: 100%;
+	/* height: 100%; */
+	margin-top: auto;
+	margin-bottom: auto;
+	top: 0;
+	bottom: 0;
+	position: absolute
+}
+
+/* 展示logo的样式 */
+
+.img-text {
+	/*   font-family: "Noto Sans SC";
+    font-weight: 100; */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.img-model {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	right: 0.4rem;
+	/* bottom: -0.7rem; */
+	bottom: 0.2rem;
+}
+
+/* 右侧工具栏 */
+#toolsPart {
+	position: absolute;
+	width: 30%;
+	height: 100%;
+	right: 3%;
+}
+
+/* 右侧工具栏标题 */
+#toolsPartTitleP {
+	position: absolute;
+	top: 6%;
+	left: 50%;
+	white-space: nowrap;
+	transform: translate(-50%, -6%);
+}
+
+/* 右侧工具栏背景图 */
+#toolsPartBg {
+	position: absolute;
+	width: 100%;
+	height: 90%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: -1;
+}
+
+/* 右侧工具栏样式 */
+.selectionList {
+	position: absolute;
+	width: 90%;
+	height: 70%;
+	top: 66%;
+	left: 50%;
+	transform: translate(-50%, -66%);
+	z-index: 2;
+}
+
+.listWrap {
+	/* margin-top: 30px; */
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	/* left: 65%; */
+	display: flex;
+	flex-wrap: wrap;
+	overflow-y:auto;
+}
+
+.addedElements {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+}
+
+/* 模型特殊处理 */
+.addedModelElement {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 70px;
+	height: 70px;
+	transform: translate(-50%, -50%);
+	z-index: 10;
+	/* 防止canvas溢出 */
+	overflow: hidden;
+}
+
+/* 设置模型移动到固定的位置 */
+.addedModelElement canvas {
+	/* z-index: -100; */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	/* 让canvas不被拖拽 */
+	pointer-events: none;
+}
+
+.addedSingleElementDiv {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	outline: #0062CC;
+}
+
+.addedSingleElement {
+	position: absolute;
+	width: 80px;
+	/* 	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); */
+	z-index: 10;
+}
+
+
+
+.addedText {
+	position: absolute;
+	/* white-space: normal; */
+	z-index: 10;
+	/* border-style: double double double double; */
+	word-break: break-word;
+	 resize:both;
+}
+
+
+.singleSelection {
+	position: relative;
+	width: 30%;
+	box-sizing: border-box;
+	float: left;
+	margin-left: 5px;
+	margin-bottom: 30px;
+}
+
+.singleSelection .selectedIcon {
+	width: 1.875em;
+}
+
+.singleSelection .unselectedIcon {
+	width: 1.875em;
+}
+
+.singleSelection .selectionImg {
+	width: 100%;
+	/* height: 60px; */
+}
+
+
+/* 上传成功后的页面样式 */
+#final-page {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+#shareImg {
+	/* width: 100%; */
+	height: 100%;
+}
+
+
+/* 修改图片位置 */
+.nav-bar-tab {
+	bottom: 0;
+	display: table;
+	width: 100%;
+	height: 50px;
+	padding: 0;
+	table-layout: fixed;
+	border-top: 0;
+	border-bottom: 0;
+	-webkit-touch-callout: none;
+	/* opacity: 0.3; */
+}
+
+.tab-item {
+	display: table-cell;
+	overflow: hidden;
+	width: 1%;
+	height: 50px;
+	/* text-align: center; */
+	/* vertical-align: middle; */
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #000;
+}
+
+.nav-bar-tab .tab-item:active {
+	background: #D3D3D3;
+}
+
+.nav-bar-tab .tab-icon {
+	font-size: 28px;
+	position: relative;
+	z-index: 20;
+	/* top: 3px; */
+	/* width: 24px;
+    height: 24px; */
+	/* width: 2.6em; */
+	width: 4em;
+	height: 1em;
+	/* margin-bottom: 0.8em; */
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+/* 按钮位置样式 */
+.nav-bar-tab .back {
+	width: 2.8em;
+	margin-right: 2em;
+	/* margin-bottom: 0.7em; */
+}
+
+.nav-bar-tab .left {
+	width: 3.5em;
+	/* margin-bottom: 0.5em; */
+	margin-left: 1.6em;
+}
+
+.nav-bar-tab .right {
+	width: 3.5em;
+	/* margin-bottom: 0.5em; */
+	margin-right: 1.6em;
+}
+
+.nav-bar-tab .next {
+	margin-left: 2em;
+	/* margin-bottom: 0.7em; */
+}
+
+/* 放大细节显示 */
+.img-clip .magnifier {
+	top: -40px;
+}
+
+.nav-bar-tab .tab-item .mui-icon~.tab-label {
+	font-size: 11px;
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.nav-bar-tab .tab-item .mui-icon.rotate90 {
+	-webkit-transform: scaleX(1);
+	transform: scaleX(1);
+}
+
+/* 上传跟拍照样式 */
+.uploadimg {
+	width: 2em;
+}
+
+/**
+ * 立体风格按钮
+ */
+
+.button-three-dimen {
+	display: block;
+	zoom: 1;
+	vertical-align: baseline;
+	margin: 0px 0px;
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font: 14px/100% Arial, Helvetica, sans-serif;
+	padding: 0;
+	/* padding: .5em 2em .55em; */
+	text-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+	-webkit-border-radius: .5em;
+	-moz-border-radius: .5em;
+	border-radius: .2em;
+	/* -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2); */
+	box-shadow: 0 0 0;
+	/* color: #606060; */
+	color: #fff;
+	/* border: solid 1px #b7b7b7; */
+	border: 0;
+	background: #fff;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
+	background: -moz-linear-gradient(top, #fff, #ededed);
+}
+
+.button-three-dimen:hover {
+	text-decoration: none;
+	background: #ededed;
+	/* background: #FCFCF4; */
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
+	background: -moz-linear-gradient(top, #fff, #dcdcdc);
+}
+
+.button-three-dimen:active {
+	position: relative;
+	top: 1px;
+	color: #999;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
+	background: -moz-linear-gradient(top, #ededed, #fff);
+}
+
+
+.clip-content {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+	bottom: 50px;
+	/* 使子物体居中布局 */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.show-content {
+	position: relative;
+	/* margin: 0 auto; */
+	/* text-align: center; */
+	/* vertical-align: middle; */
+	/* height: 85%; */
+	/* 使子物体居中布局 */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.img-wrap {
+	position: absolute;
+	/* 使子物体居中布局 */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+/* .choose-gallery {
+	margin-top: -10px;
+}
+
+.choose-camera {
+	margin-top: -10px;
+	margin-left: 100px;
+}
+
+.default-background {
+	margin-top: -10px;
+	margin-left: 250px;
+} */
+
+#chooseBgDiv {
+	position: absolute;
+	height: 50px;
+	width: 100%;
+	bottom: 0%;
+	/* display: -webkit-flex; */
+	display: flex;
+	justify-content: space-around;
+}
+
+.phone-btn {
+	width: 7.5em;
+	/* margin-top: 1.3em; */
+	/* margin-left:1em; */
+	display: table-cell;
+	vertical-align: middle;
+	/* text-align: center; */
+}
+
+/* #chooseBgDiv:before {
+	content: "";
+	display: block;
+} */
+
+/* #chooseBgDiv:after {
+	content: "";
+	display: block;
+} */
