@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>AR Card Viewer 1422</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="css/default.css" />
+	</head>
+
+	<!-- 调试用 -->
+	<!-- <script src="./js/vconsole.min.js"></script>
+	<script>
+		// 初始化vConsole
+		window.vConsole = new window.VConsole({
+			defaultPlugins: ['system', 'network', 'element', 'storage'], // 可以在此设定要默认加载的面板
+			maxLogNumber: 1000,
+			// disableLogScrolling: true,
+			onReady: function() {
+				console.log('vConsole is ready.');
+
+			},
+			onClearLog: function() {
+				console.log('on clearLog');
+			}
+		});
+	</script> -->
+	<!-- 调试用 -->
+
+	<!-- include aframe-ar.js -->
+	<script src="./js/aframe-master.js"></script>
+	<script src="./js/aframe-ar.js"></script>
+	<script src="./js/three.ar.js"></script>
+	<script src="./js/aframe-extras.js"></script>
+	<script type="text/javascript" src="./js/jquery-3.5.1.min.js"></script>
+
+	<body>
+		<!-- UI -->
+		<div class="detectingPanel">
+			<img src="./img/ScanFrame.png" id="scanFrame" style="position: fixed; top: 32.4%; left: 18.7%; width: 62.6%;" />
+			<div id="scanArea" style="position: fixed; top: 32.4%; left: 18.7%; width: 62.6%;">
+				<img src="./img/ScanBar.png" id="scanBar" />
+			</div>
+			<img src="./img/ScanTip.png" id="scanTip" style="position: fixed; top: 70.1%; left: 25%; width: 50%;">
+
+			<!-- <img src="img/RecognizedTip.png" id="recognizedTip" style = "position: fixed; top: 70.1%; left: 25%; width: 50%;"> -->
+			<!-- <img src="img/RescanBtn.png" id="rescanBtn" style = "position: fixed; bottom: 10.2%; left: 33%; width: 33%;"> -->
+		</div>
+		<div class="detectedPanel hidden">
+			<!-- <img src="img/RecognizedTip.png" id="recognizedTip" style = "position: fixed; top: 70.1%; left: 25%; width: 50%;"> -->
+			<img src="./img/RescanBtn.png" id="rescanBtn" style="position: fixed; bottom: 10.2%; left: 33%; width: 33%;">
+		</div>
+
+		<div id="iOSWeChatMasking" class="hidden">
+			<!-- <p id="openWithBrowserTipText">Please click ··· to open in Safari</p> -->
+			<img id="openWithBrowserTipImage" src="img/OpenWithBrowserTip.png">
+		</div>
+
+		<script>
+			window.addEventListener("camera-init", (data) => {
+				console.log("camera-init", data);
+			})
+
+			window.addEventListener("camera-error", (error) => {
+				console.log("camera-error", error);
+			})
+
+
+			// 模型加载完成回调
+			AFRAME.registerComponent('modify-materials', {
+				init: function() {
+					console.log("modify-materials");
+					// Wait for model to load.
+					this.el.addEventListener('model-loaded', () => {
+						// console.log('model-loaded');
+					});
+				}
+			});
+
+			AFRAME.registerComponent("registerevents", {
+				init: function() {
+					var marker = this.el;
+					console.log("registerevents");
+					// 识别到marker的回调
+					marker.addEventListener("markerFound", function() {
+						var markerId = marker.id;
+						// console.log(marker);
+						// console.log("markerFound: ", markerId);
+						// 显示贺卡
+						document.querySelector(".detectingPanel").classList.add("hidden");
+
+					});
+
+					// 丢失marker的回调
+					marker.addEventListener("markerLost", function() {
+						var markerId = marker.id;
+						console.log("markerLost: ", markerId);
+						// 隐藏贺卡
+						document.querySelector(".detectingPanel").classList.remove("hidden");
+						// document.querySelector(".detectedPanel").classList.add("hidden");
+						// document.querySelector('#picBg').setAttribute("visible","false");
+					});
+				}
+			});
+		</script>
+		<!-- 注意renderer的修改，这样手机不会出现材质透视错乱问题 -->
+		<a-scene embedded id="scene" arjs="sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;" renderer="precision: medium; antialias: false; alpha: true; logarithmicDepthBuffer: true; colorManagement: true;">
+			<a-assets id="assets">
+				<!-- 	<a-asset id="modelAsset_0" src="./model/SnowMan/test.glb">
+				</a-asset> -->
+			</a-assets>
+
+			<!-- handle marker -->
+			<!-- "registerevents" will register event listeners for the marker when it is found and lost,
+		as defined in the inline script above -->
+			<!-- <a-marker preset="hiro" id="marker-hiro" registerevents> -->
+			<!-- <a-marker id="marker" type="pattern" url="./data/ARMarker.patt" registerevents> -->
+			<!-- 贺卡背景 -->
+			<!-- marker宽高为1，z取一半0.5 -->
+			<!-- <a-plane id="cardBg" src="./img/BGNew.jpg" position="0 0 0.5" visible="true" rotation="210 0 0" width="1" height="1"
+				 shadow> -->
+			<!-- <a-entity obj-model="obj: #objAsset; mtl: #mtlAsset" position="0 0 0.1" rotation="90 0 0" scale="0.02 0.02 0.02" modify-materials> -->
+			<!-- material="src: https://molion.tech/test/YiDaAR/ARCardViewer/model/SnowMan/texture.jpg; roughness: 1; metalness: 0"> -->
+			<!-- </a-entity> -->
+			<!-- <a-entity fbx-model="#fbxAsset" position="0 0 0.1" rotation="90 0 0" scale="1 1 1" modify-materials> -->
+			<!-- material="src: https://molion.tech/test/YiDaAR/ARCardViewer/model/SnowMan/texture.jpg; roughness: 1;"> -->
+			<!-- </a-entity> -->
+			<!-- 模型，位置修改前两个xy坐标就行-->
+
+			<!-- <a-entity gltf-model="#model" position="0 0 0.05" rotation="90 0 0" scale="0.5 0.5 0.5" modify-materials
+					 animation-mixer> -->
+			<!-- </a-entity> -->
+			<!-- <a-entity gltf-model="#modelAsset_0" id="model_0" position="0 0 0.05" rotation="90 0 0" scale="0.5 0.5 0.5"
+					 modify-materials>
+					</a-entity> -->
+			<!-- </a-plane> -->
+			<!-- </a-marker> -->
+
+			<!-- add a simple camera -->
+			<a-entity camera></a-entity>
+
+		</a-scene>
+
+	</body>
+
+	<!-- Register an aframe component that allows reacting to marker events -->
+	<script>
+		//用户标识，加载资源路径所需
+		var cId;
+		//贺卡唯一标识，加载资源路径所需
+		var uId;
+		//设置贺卡背景尺寸和位置
+		var cardWidth;
+		var cardHeight;
+		var cardUrl;
+		//设置模型数目和位置
+		var modelCount;
+		var modelPosArr;
+		//域名
+		// var domainName = "https://molion.tech/test/YiDaAR/";
+		// var domainName = "https://webar.esquel.cn/";
+		// var domainName = "https://eap-app.esquel.com/";
+		var domainName = "https://" + document.domain + '/';
+
+		var isIOSWeChat = false;
+
+		//初始化
+		Init();
+
+		//初始化
+		function Init() {
+			//设置扫描范围高度，控制动画播放范围
+			var scanAreaHeight = parseFloat(document.getElementById("scanArea").style.width) / 100 * document.documentElement.clientWidth;
+			// console.log("scanAreaHeight: " + scanAreaHeight);
+			document.getElementById("scanArea").style.cssText += "height:" + scanAreaHeight + "px;";
+
+			// 判断在ios系统中打开微信浏览器
+			ChargeIfIsIOSWeChat();
+			// 非ios系统微信浏览器，继续运行
+			if (isIOSWeChat == false) {
+				// 初始化摄像头
+				InitCamera();
+				//请求数据，刷新背景图和模型位置
+				GetData();
+			}
+		}
+
+		// 判断在ios系统中打开微信浏览器
+		function ChargeIfIsIOSWeChat() {
+			// window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
+			var u = navigator.userAgent;
+			var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+			if (isIOS) {
+				// console.log("isIOS");
+				//ios系统输出
+				var ua = navigator.userAgent.toLowerCase();
+				if (ua.match(/MicroMessenger/i) == "micromessenger") {
+					console.log("isIOS WeChat！！！");
+					//使用微信浏览器(微信打开)输出
+					$("#iOSWeChatMasking").removeClass("hidden");
+					isIOSWeChat = true;
+				}
+			}
+		}
+
+		// 初始化摄像头
+		function InitCamera() {
+			if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+				console.log("enumerateDevices() is not supported");
+				return;
+			}
+			// 解决摄像头焦距问题
+			navigator.mediaDevices
+				.getUserMedia({
+					video: {
+						width: {
+							//最小限制
+							min: 1024,
+							//理想分辨率
+							ideal: 1280,
+							//最大限制
+							max: 1920
+						},
+						height: {
+							min: 776,
+							ideal: 720,
+							max: 1080
+						},
+						facingMode: {
+							exact: "environment"
+						}
+					}
+				})
+				.then(function(stream) {
+					/* use the stream */
+					// console.log("getVideoTracks", stream.getVideoTracks());
+					// stream.getVideoTracks().forEach(function(track) {
+					// 	console.log("getCapabilities", track.getCapabilities());
+					// });
+				})
+				.catch(err => console.error("getUserMedia failed: ", err));
+		}
+
+		function GetData() {
+			var formData = new FormData();
+			// var searchURL = 'http://molion.tech/test/YiDaAR/ARCard/examples/index.html?cid=1&uid=_041WWuFk';
+			// 获取 href 属性中跟在问号后面的部分
+			var searchURL = window.location.search;
+			// searchURL = searchURL.substring(1, searchURL.length);
+			cId = searchURL.split("&")[0].split("=")[1];
+			//去掉字符串之前的0
+			cId = parseInt(cId).toString();
+			uId = searchURL.split("&")[1].split("=")[1];
+
+			//设置ar marker
+			var newMarkerUrl = domainName + "ARCardAssets/" + cId + "/Marker/ARMarker.patt";
+			var newMarkerDom = $('<a-marker id="marker" type="pattern" url="' + newMarkerUrl +
+				'" registerevents> </a-marker>');
+			var newPlaneDom = $(
+				'<a-plane id="cardBg" src="./img/BGNew.jpg" position="0 0 0.5" visible="true" rotation="210 0 0" width="1" height="1" shadow> </a-plane>'
+			);
+
+			$("#scene").append($(newMarkerDom));
+			$("#marker").append($(newPlaneDom));
+
+			console.log("cId", cId);
+			console.log("uId", uId);
+			formData.append("uId", uId);
+			// console.log("url",domainName + 'yida-ar-admin/public/index.php/getCarsInfo');
+			$.ajax({
+				url: domainName + 'yida-ar-admin/public/index.php/getCardsInfo',
+				async: false,
+				type: "POST",
+				data: formData,
+				dataType: "json",
+				processData: false,
+				contentType: false,
+				success: function(data) {
+					console.log("data:", data);
+					//加载数据
+					cardWidth = data["data"]["cardWidth"];
+					cardHeight = data["data"]["cardHeight"];
+					cardUrl = data["data"]["card_url"];
+
+					if (data["data"]["modelPosArr"] != null) {
+						//获取模型位置数组
+						modelPosArr = data["data"]["modelPosArr"];
+						// console.log("modelPosArr", typeof(modelPosArr));
+						// console.log("modelPosArr 0", modelPosArr[0]);
+						// console.log("modelPosArr", modelPosArr);
+						//获取模型数目
+						modelCount = Object.keys(modelPosArr).length;
+						console.log("modelCount", modelCount);
+					} else {
+						modelCount = 0;
+					}
+					//加载贺卡背景
+					loadCardBg();
+					//加载模型
+					loadModel();
+				},
+				error: function(xhr) {
+					console.log("error", xhr);
+				}
+			});
+
+			//加载贺卡背景
+			function loadCardBg() {
+				// 生成背景plane Dom
+				// 样例：
+				// <a-plane id="cardBg" src="./img/BGNew.jpg" position="0 0 0.5" visible="true" 
+				// rotation="180 0 0" width="1" height="1" shadow>
+				var newPlaneUrl = domainName + "yida-ar-admin/public/images/" + cardUrl;
+				$("#cardBg").attr('src', newPlaneUrl);
+
+				//设置贺卡背景尺寸和位置
+				var _cardWidth = parseInt(cardWidth) / 200;
+				var _cardHeight = parseInt(cardHeight) / 200;
+				var minScale = 1.3;
+				var maxScale = 3;
+				//横版
+				if (_cardWidth > _cardHeight) {
+					if (_cardHeight < minScale) {
+						//高度放大到1.3，同时宽度放大相应倍数
+						_cardWidth *= (minScale / _cardHeight);
+						_cardHeight = minScale;
+						// console.log("set size 0");
+					}
+					if (_cardWidth < minScale) {
+						//宽度放大到1.3，同时高度放大相应倍数
+						_cardHeight *= (minScale / _cardWidth);
+						_cardWidth = minScale;
+						// console.log("set size 1");
+					}
+					if (_cardHeight > maxScale) {
+						//高度缩小到2.3，同时宽度缩小相应倍数
+						_cardWidth /= (_cardHeight / maxScale);
+						_cardHeight = maxScale;
+						// console.log("set size 0");
+					}
+					if (_cardWidth > maxScale) {
+						//宽度缩小到2.3，同时高度缩小相应倍数
+						_cardHeight /= (_cardWidth / maxScale);
+						_cardWidth = maxScale;
+						// console.log("set size 1");
+					}
+				}
+				//竖版
+				else {
+					if (_cardWidth < minScale) {
+						//宽度放大到1.3，同时高度放大相应倍数
+						_cardHeight *= (minScale / _cardWidth);
+						_cardWidth = minScale;
+						// console.log("set size 2",_cardWidth);
+						// console.log("set size 2",_cardHeight);
+					}
+					if (_cardHeight < minScale) {
+						//高度放大到1.3，同时宽度放大相应倍数
+						_cardWidth *= (minScale / _cardHeight);
+						_cardHeight = minScale;
+						// console.log("set size 3");
+					}
+					if (_cardWidth > maxScale) {
+						//宽度缩小到2.3，同时高度缩小相应倍数
+						_cardHeight /= (_cardWidth / maxScale);
+						_cardWidth = maxScale;
+						// console.log("set size 2",_cardWidth);
+						// console.log("set size 2",_cardHeight);
+					}
+					if (_cardHeight > maxScale) {
+						//高度缩小到2.3，同时宽度缩小相应倍数
+						_cardWidth /= (_cardHeight / maxScale);
+						_cardHeight = maxScale;
+						// console.log("set size 3");
+					}
+				}
+				console.log("_cardWidth", _cardWidth);
+				console.log("_cardHeight", _cardHeight);
+				$("#cardBg").attr("width", _cardWidth);
+				$("#cardBg").attr("height", _cardHeight);
+			}
+
+			function loadModel() {
+				if (modelCount > 0) {
+					for (var i = 0; i < modelCount; i++) {
+						idx = i;
+						if (modelPosArr[idx]["model_" + idx]["modelPos_X"] != '-9999') {
+							// 生成模型asset Dom
+							// 样例：
+							// <a-asset id="modelAsset_0" src="./model/SnowMan/test.glb">
+							// </a-asset>
+							var newAssetUrl = domainName + "ARCardAssets/" + cId + "/Element_3D/Model_" + idx + ".glb";
+							var newAssetDom = $('<a-asset id="modelAsset_' + idx + '" src="' + newAssetUrl + '"></a-asset>');
+							$("#assets").append($(newAssetDom));
+
+							//生成模型entity Dom
+							//样例：
+							// <a-entity gltf-model="#modelAsset_0" id="model_0" rotation="90 0 0" scale="0.5 0.5 0.5" modify-materials>
+							// </a-entity>
+							var newEntityModeDom = $('<a-entity gltf-model="#modelAsset_' + idx + '" id="model_' + idx +
+								'" rotation="90 0 0" position="0 0 0" scale="0.5 0.5 0.5" animation-mixer="clip: run;" modify-materials></a-entity>'
+							);
+							$("#cardBg").append($(newEntityModeDom));
+
+							//根据比例放置模型位置
+							var modelPos_X = parseFloat(modelPosArr[idx]["model_" + idx]["modelPos_X"]) * $("#cardBg").attr("width") / 2;
+							var modelPos_Y = parseFloat(modelPosArr[idx]["model_" + idx]["modelPos_Y"]) * $("#cardBg").attr("height") / 2;
+							var pos = modelPos_X + " " + modelPos_Y + " " + 0.05;
+							console.log("modelPos_X", modelPos_X);
+							console.log("modelPos_Y", modelPos_Y);
+							// var modelPos = {
+							// 	x: modelPos_X,
+							// 	y: modelPos_Y,
+							// 	z: 0.05
+							// };
+							// document.querySelector("#model_0").setAttribute("position",modelPos);
+							var newEntityModelId = "model_" + idx;
+							$("#" + newEntityModelId).attr('position', pos);
+							console.log("pos:", $("#model_0").attr("position"));
+						}
+					}
+				}
+			}
+		}
+	</script>
+</html>

@@ -1,0 +1,99 @@
+body {
+	/* margin: 0;
+	padding: 0;
+	overflow: hidden; */
+	margin: 0px;
+	overflow: hidden;
+	/* font-family: Monospace; */
+}
+
+.none {
+	display: none;
+}
+
+#iOSWeChatMasking {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	/* transition: all linear 1s; */
+	/* chrome用 */
+	z-index: 200;
+	-webkit-background-color: rgba(0, 0, 0, 0.7);
+	/* safari用 */
+	/* transform: translateZ(200);
+	overflow:hidden; */
+}
+
+#openWithBrowserTipImage{
+	position: absolute;
+	width: 100%;
+	top: 0%;
+	right: 0%;
+	-webkit-transform:translateZ(200px);
+}
+
+.detectingPanel {
+	position: absolute;
+	bottom: 45px;
+	z-index: 100;
+
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+
+.detectedPanel {
+	position: absolute;
+	bottom: 45px;
+	z-index: 100;
+
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+
+.mainCanvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 90;
+}
+
+/* 扫描条动画 */
+#scanBar {
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	animation: scanBarMotion 3s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+
+/* 扫描条动画 */
+@keyframes scanBarMotion {
+	0% {
+		top: 0%;
+		opacity: 0;
+	}
+
+	5% {
+		opacity: 1;
+	}
+
+	95% {
+		opacity: 1;
+	}
+
+	100% {
+		top: 88%;
+		opacity: 0;
+	}
+}
+
+.hidden {
+	display: none;
+}
